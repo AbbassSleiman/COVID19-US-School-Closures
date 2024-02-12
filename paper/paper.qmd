@@ -1,221 +1,160 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
-author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
-date: today
+title: "School Closures during the COVID-19 Pandemic [fix title]"
+author: "Krishiv Jain, Julia Kim, Abbass Sleiman"
+thanks: "Code and data are available at: https://github.com/AbbassSleiman/COVID-19; Replication on Social Science Reproduction platform available at: https://www.socialsciencereproduction.org/reproductions/1447/index?step=1 (temporary link)"
+date: "February 15, 2024"
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
-format: pdf
-number-sections: true
+format: 
+  pdf: 
+    include-in-header: 
+      text: |
+        \usepackage{lscape}
+        \newcommand{\blandscape}{\begin{landscape}}
+        \newcommand{\elandscape}{\end{landscape}}
+    documentclass: article
+    geometry: margin = 1.2in
+    abstract: "...."
+    number-sections: true
+output: 
+  bookdown::pdf_document2
+toc: false
+fig_caption: yes
+nocite: '@*'
 bibliography: references.bib
 ---
 
-```{r}
-#| include: false
-#| warning: false
+```{r setup}
+#| echo: false
 #| message: false
-
+#| warning: false
+library(here) 
 library(tidyverse)
-library(palmerpenguins)
+library(knitr)
+library(janitor)
+library(kableExtra)
+library(DiagrammeR)
 ```
-
 
 # Introduction
 
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
+On March 11, 2020, the World Health Organisation (WHO) declared the COVID-19 outbreak a global pandemic, urging all countries take action in detecting infection and limiting spread [@WHO]. Shortly after the announcement, many countries began to implement measures to reduce COVID-19 contagion and transmission. In spite of the general effectiveness of such measures in saving lives [@effectiveness], they imposed severe disruptions to the lives of children and adolescents. These included delayed healthcare provision, decreased contact with peers and relatives, routine modification, and diminished sense of well-being [@impact_covid]. Among the most significant disruptions, and the topic of this paper, was the closure of schools in favour of virtual learning.
 
-The remainder of this paper is structured as follows. @sec-data....
+Before the pandemic, there was a modestly-sized economic literature on the impact of school closures on learning, with data generally drawn from short-term episodes such as teacher strikes [@Jack_Oster_2023]. It was widely observed that time outside of school caused loss of literacy and numeracy skills, more so among the marginalised, and widened student achievement gaps [@pastresearch]. These findings are certainly suggestive of the possible effects of COVID-19 school closures on student learning. However, as the pandemic's disruptions typically surpassed previous episodes of school closures, the scope for inference from earlier works is limited [@Jack_Oster_2023]. A paper by Jack and Oster, "COVID-19, School Closures, and Outcomes" [-@Jack_Oster_2023] published in American Economic Association's *Journal of Economic Perspectives*, sought to address this gap, by focusing on emerging short-term evidence of the impact of COVID-19 school closures on academic performance.
 
+In studying the scope of school closures across the United States, they reported that the country experienced, on average, one of the highest number of days of school closed between January 2020 to December 2021 worldwide [@Jack_Oster_2023]. Jack and Oster [-@Jack_Oster_2023] also found that the duration of school closures varies with local demographic characteristics, with more disadvantaged districts facing more prolonged closures. The study population was grade 3 to 8 students across 11 major American states, being Colorado (CO), Connecticut (CT), Massachusetts (MA), Minnesota (MN), Mississippi (MI), Ohio (OH), Rhode Island (RI), Virginia (VA), Wisconsin (WI), West Virginia (WV) and Wyoming (WY). The estimand was the impact of COVID-19 closures on academic performance. They found considerable declines in test scores during the 2020-2021 academic year, with declines larger in school districts with less in-person instruction [@Jack_Oster_2023]. On average, pass rates fell from 2019 to 2021 by an average of 12.8 percentage points in mathematics and 6.8 in English Language Arts (ELA) [@Jack_Oster_2023].
 
+Our paper seeks to assess the robustness and generalisability of Jack and Oster's work. We successfully replicate and extend three of its major research claims:
 
-# Data {#sec-data}
+(1) With respect to the world, the United States faced second highest number of days of school closed between January 2020 to December 2021.
 
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
+(2) Access to in-person education was unequal across various demographic characteristics, being significantly correlated with an area's ethnic composition, broadband usage and unemployment rates. In general, more disadvantaged districts spent more of the school year in virtual schooling.
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
+(3) School closures contributed significantly to the decline in students' pass rates in mathematics and ELA in the 2020-2021 school year. Changes in ELA scores were smaller than mathematics scores, but significantly larger in districts with larger populations of students who are Black, Hispanic, English Language Learners (ELL) or eligible for free and reduced price lunch (FRPL).
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
+We also apply a Dutch-facing lens, examining the extent of school closures and the impact on student learning, in a country whose pandemic circumstances were regarded as most favourable for students [@engzell]. In spite of a short lockdown, equitable school funding and high degree of technological preparedness, we discuss how Dutch students still suffered a loss of the equivalent of one-fifth of a year of education and how the effects were distributed unequally according to student demographics. Throughout, our investigation is conducted using the open-source statistical programming language `R` [@R], with functionalities from `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `here` [@here], `kableExtra` [@kableExtra] and `DiagrammeR` [@DiagrammeR]. 
 
-Talk more about it.
+This paper is structured, as follows. In Section 2, we address the sources of the datasets in the original paper, the methodologies used to collect them, and highlight key features. In Section 3, we conduct a replication of the original study to confirm its internal validity and to design scientific figures that permit a more effective visualisation of the data. In Section 4, we assess the degree of the external validity of these findings, by applying them to countries in sub-Saharan Africa. We compliment this discussion by addressing ethical implications and limitations of the original research, and by giving directions for future analysis.
 
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
+# Data
 
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
+## Source
 
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
+The original paper used for replication is Jack and Oster's "COVID-19, School Closures, and Outcomes" [-@Jack_Oster_2023], published in the American Economic Association's *Journal of Economic Perspectives*. To investigate the degree of school closures in the United States, and their attendant effects on children, they pose the following three questions:
 
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
+(1) Relative to the global picture, what is the extent of school closures in the United States?
 
-Talk way more about it. 
+(2) What are the demographic patterns underlying these closures? Namely, how are the number of days of school closed correlated with ethnicity, unemployment rate and political leanings at the district- or county-level?
 
+(3) What is the short-term impact of school closures on student academic performance and learning inequalities?
 
+## Methodology
 
-# Model
+-   address collection / measurement
+-   For Krishiv: for research question #1, we actually want data about the rest of the world. We should supplement the data given in the package to see where exactly the United States falls with respect to the rest of the world in terms of \# of days closed, rather than
+-   For Abbass: for research question #2, we want to show that significant variation exists in the average number of days spent in virtual school by demographics, specifically, by race, unemployment rates, and political leanings of the area. Ignore school mode with little variation.
+-   For Abbass: please extend the pass rate figure by incorporating data from the replication package of the other paper, in order to stratify by race, percent in-person, FRPL and ELL (for example). You can see the figure here: <https://www.aeaweb.org/research/charts/pandemic-schooling-test-scores-us> Ignore state, probably
 
-The goal of our modelling strategy is twofold. Firstly,...
+## Features
 
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
+-   rigorously define variables in a neat way
+-   e.g., define "school closures" rigorously (e.g., a closure is identified as Tracker score of 2 or 3... what is a Tracker score?)
 
 # Results
 
-Our results are summarized in @tbl-modelresults.
-
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
-```
-
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
-
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
-```
-
-
-
+-   again, the 2023 student paper is very good as a reference
 
 # Discussion
 
-## First discussion point {#sec-first-point}
+## Findings
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+The analysis by Jack and Oster seeks to define the scope of COVID-19 school closures in the United States with respect to the global picture, and explore the correlation between the number of days of school closed with various demographic characteristics of eleven of its major states. The authors also compare the average change in pass rates in mathematics and ELA with the number of days of in-person schooling in Spring 2021 versus Spring 2018-2019. Our paper has successfully replicated and extended an important part of three of their major findings:
 
-## Second discussion point
+(1) Between January 2020 and December 2021, the United States experienced the second-highest number of days of school closed worldwide, with an average of 667 days. In fact, it falls second only to Azerjiban, which recorded an average of 669 days.
+(2) Access to in-person education was unequal by demographic characteristics. More disadvantaged districts, *i.e.*, those with higher proportions of racial minorities, lower broadband usage, and lower employment rate, spent more days in virtual schooling.
+(3) During the 2020-2021 school year, students' pass rates on standardised assessments declined by 12.8 percentage points in mathematics and 6.8 in ELA. Declines were more severe in more disadvantaged districts, *i.e.*, those with higher proportions of racial minorities, English language learners, and lower socioeconomic status.
 
-## Third discussion point
+As noted by Jack and Oster [-@Jack_Oster_2023], it can be seen that the equity impacts are two-fold. First, schools (and students) with lower resources are less likely to have access to in-person instruction. Second, for such groups, the consequences of a lack of in-person instruction are more severe. This may be due to a smaller investment by such schools in effective remote learning programs or due to the challenges disadvantages students face at home, such as less reliable Internet connection or fewer community resources. Accordingly, while COVID-19 school closures imposed learning loss costs on students as a whole, they affected most negatively those who were already most vulnerable. This exacerbates the already large inequality gap. 
 
-## Weaknesses and next steps
+Having replicated their work, we now turn to examine its relevance to the Netherlands. We hope to gain insights into the extent of school closures in the Netherlands and its effect on student performance, with an especial focus on students from disadvantaged homes. 
 
-Weaknesses and next steps should also be included.
+## Relevance to the Netherlands: a Case Study 
+Efforts have been made worldwide to study the impacts of school closures on student learning, typically revealing significant test-score losses [@Jack_Oster_2023]. The Netherlands is interesting as a "best-case" scenario for students, with a short lockdown of 8 weeks, equitable school funding and world-leading rates of broadband access [@engzell]. According to the Organisation for Economic Cooperation and Development (OECD) [-@OECD], the Dutch government also entered the pandemic with strong public finances, extending generous support measures for individuals and families. The Netherlands also scores close to the OECD average in school reading and places among its top performers in mathematics [@schleicher2018pisa]. For these reasons, the Netherlands may likely provide a lower bound on student learning loss elsewhere in Europe and the world [@engzell]. 
 
-\newpage
+Between January 2020 and December 2021, the Netherlands faced 55 days of school closed [@hatch], considerably shorter than the global average (362 days) and the United States (677 days). Key to our discussion is that the Dutch school system provides compulsory standardised assessments in mathematics, spelling and reading twice a year: halfway into to the school year in January and at the end of the school year in June. In 2020, these testing dates occurred just before and after nationwide school closures. Access to biannual test scores of 15% ($n \approx 350,000$) Dutch students between grades 4 to 7 from 2017 to 2020, published by the The Student Monitoring System (LVS), thus provides a natural benchmark against which to assess learning loss. To study the data, Engzell, Frey, and Verhagen [-@engzell] transform these test scores into percentiles by imposing a uniform distribution separately by subject, grade and testing occasion for each of the years 2017 to 2020. In adjusting for sample composition, their results reveal a learning loss of about 3.1, 3.0 and 3.3 percentile points in mathematics, spelling and reading. The effect is equivalent to a loss of one-fifth of a school year, the same period that Dutch schools remained closed. By contrast, declines in test scores of American students between grades 3 to 8 are equivalent to a loss of about one year of learning [@PBS]. 
 
-\appendix
+The LVS also collects data on student demographics and school characteristics, as part of the national system of weighted student funding [@sanoma2024lvs]. In comparing this data with test scores, Engzell, Frey, and Verhagen [-@engzell] find learning losses to be up to 60% larger among students from less-educated homes, confirming the unequal costs of the pandemic on children. Moreover, they report learning losses vary considerably by school, with some schools seeing a loss of 10 percentiles or more, and some recording no loss or small gains. However, they discover a concentration of these losses in schools with a high proportion students who are socioeconomically disadvantaged or of non-Western immigrant background. These patterns are consistent with those observed in the United States, where learning loss was also more pronounced among students of more vulnerable groups. Whether in the Netherlands or in the United States, school closures appear to have caused socioeconomic gaps to widen.  
 
-# Appendix {-}
+Despite favourable conditions, the Netherlands appears to have made little to no progress in learning from home. However, the impact on student learning appears to be milder than that in the United States, with Dutch students losing the equivalent of one-fifth rather than a full year of learning. These findings by Engzell, Frey, and Verhagen [-@engzell] suggest learning losses even larger in countries with weaker infrastructure or longer lockdowns. Efforts should be made to investigate the impact of school closures on learning outcomes in these countries. Moreover, to remediate consequences on student learning, social investment strategies should be designed and implemented to enhance resilience and equity in education. 
+
+## Ethical Concerns 
+
+There are ethical concerns with the collection of race, employment, socioeconomic and COVID-19 data in surveys, including data sensitivity and security. Collecting personally-identifying information (PII) may rouse feelings of anxiety and distrust, and raise important concerns about privacy and confidentiality [@OHRC2009]. Individuals from vulnerable populations are particularly susceptible to such feelings of distrust in researchers [@corbiesmith]: anxiety about the research protocol, stigma, fear of disclosure, historical exploitation may be some reasons motivating a hesitancy to participate. 
+
+Moreover, stratifying test assessment scores by district-level race, ELL and FRPL shares may be problematic. The underperformance of vulnerable populations in relation to more privileged populations may reinforce discriminatory notions about their intellectual ability. These notions are harmful, having been found to impair even further the academic performance of minority groups [@steele]. Indeed, Steele and Aronson [-@steele] have found that, when an individual is conscious of the negative stereotypes of their group, they face *stereotype threat*, becoming fearful of confirming or being judged by those stereotypes through their actions or performance. This may lead to increased self-doubt and anxiety, and thus poorer performance on assessments. 
 
 
-# Additional data details
+## Accounting for Bias
 
-# Model details {#sec-model-details}
+Perhaps the most important threat to the validity of the results is the "endogeneity in schooling mode": this is the concern that districts with more days of school closed were more affected by other pandemic-related stressors [@Jack2]. For instance, more school closures in an area may arise in response to higher COVID-19 rates, and higher COVID-19 rates may in turn worsen the health and, thus, academic performance of students. The directed acyclic graph in Figure \ref{fig-dag-quarto} demonstrates this phenomenon, whereby COVID-19 rates serve as a confounding variable, creating a possibly spurious relationship between school closures and academic performance. However, the number of school closures were shown to have very low correlation with COVID-19 rates [@Jack_Oster_2023]. This shows that COVID-19 rates may not be as significant of a confounding variable a initially presumed. 
 
-## Posterior predictive check
-
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
-
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
-
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
-
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
-
-posterior_vs_prior(first_model) +
-  theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
+```{dot}
+//| label: fig-dag-quarto
+//| fig-cap: "COVID-19 rates as a confounder, affecting the relationship between school closures and academic performance."
+//| fig-width: 4
+# code referenced from https://tellingstorieswithdata.com/04-writing_research.html 
+digraph D {
+  
+  node [shape=plaintext, fontname = "Latin Modern Roman"];
+  
+  a [label = "School Closures"];
+  b [label = "Academic Performance"];
+  c [label = "COVID-19 Rates"];
+  
+  { rank=same a b};
+  
+  a->b;
+  c->{a, b};
+}
 ```
 
-## Diagnostics
+It is also possible that other types of lockdowns --- such as the closure of counselling services or after-school activities --- might have impacted student learning. This considerable difficulty of separating the effect of school closures from other pandemic-related stressors may bias the results and so affect their validity. One way in which we have helped disentangle these factors is to stratify the test assessments data by race, ELL and FRPL shares per district. By means of this "restriction" technique, we could compare test scores between more homogeneous demographic subgroups and better control for racial and demographic differences that may have impacted student learning outcomes. 
 
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
+Important sources of bias may have also arisen from the demographic datasets obtained from the US Department of Education's Common Core of Data [@irwin2022report], the US Bureau of Labour Statistics [@bls2021county] and the US Broadband Usage Percentages dataset [@kahan2020usbroadband]. In particular, there are various errors that may exist in census data, collected to determine district-level race shares and county-level unemployment rates across the United States. These include *coverage errors*, when a respondent is missed or counted more than once, *non-response errors*, when some information about a respondent is missing, *response errors*, where a question is misunderstood or misreported by a respondent and *processing errors*, when data is incorrectly processed [@censusErrors]. On the other hand, the US Broadband Usage Percentages dataset determines broadband usage by combining data from Microsoft services [@kahan2020usbroadband]. In failing to account for other popular forms of internet services, such those provided by Google, Facebook, Amazon and Apple, this dataset may skew the representation of broadband usage patterns in the United States. 
 
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+## Limitations
 
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
+Being a reproduction, much of the limitations of our analysis arise from those in the original work of Jack and Oster [@Jack_Oster_2023]. In particular, the correlations of school closures to local demographic variables, while insightful, are not comprehensive. For instance, it would have been beneficial to determine the average number of days spent in virtual school, weighted by district enrollment, and the share of the school population that is of other ethnicities --- namely, Whites, Asians and Native Americans --- so that comparisons can be made across all major ethnic classes. Other demographic variables might include the share of students experiencing homelessness, who have limited English proficiency or who are of low socioeconomic status. Determining such correlations would more rigorously test the claim that social inequity existed in the distribution of school closures.
 
-plot(first_model, "trace")
+What is more, Jack et al.'s [-@Jack2] standardised assessments data excludes information about the corresponding broadband usage and unemployment rates by district. It instead includes data of the corresponding shares of ELL and FRPL students by district. This discrepancy prevents us from telling a full story as to how the pass rates of schools located in districts with lower broadband usage and employment rates, known to face more days of school closed than the national average, were affected. We also question whether the shares of FRPL students are a good estimator of the shares of students with low socioeconomic status. Though FRPL enrollment are widely used in education research as an indicator of student poverty, there is emerging literature that it serves as a poor proxy for poverty [@Fazlul2023]. In fact, using multiple data sources external to the American school system, Fazlul et al. [-@Fazlul2023] show that FRPL rates greatly exceed what would be expected from stated income thresholds for program participation by 35 to 50%. This suggests that the shares of FRPL students per district may not be the most optimal estimator of student poverty, and that more insightful conclusions could have been obtained in examining instead, for instance, the shares of students in low-income households per district.  
 
-plot(first_model, "rhat")
-```
+Lastly, the state-level assessment data is obtained from only eleven states of the United States, for which district-level data is available. This dataset may not be representative of the academic performance of American students as a whole for two reasons. First, state-standardised assessments remain controversial, with critics questioning whether they accurate indicate academic ability [@yang]. Certainly, they cannot capture the ways in which students learned that were not directly given in the assessment. Second, the sample of eleven states may be too small to be generalisable. Indeed, Parolin and Kee [-@parolin] showed that wide geographic disparities existed in school closures across the country: those concentrated on the West Coast faced declines of \>75% in-person visits to schools, whereas those in the Midwest faced declines of \<25%. Both of these factors put into question the validity and generalisability of the state-assessment data, and could present a valuable direction for future work.
 
+## Future Research
 
+Reports of poor mental health (MH) in youth have been on the rise in the United States for the past decade [@nlm2022]. The COVID-19 pandemic appears to have exacerbated this trend, in significantly disrupting the lives of youth in one of their most critical periods of psycho-social development [@nlm2022]. However, the evidence on the impact of school closures --- as opposed to other pandemic-related stressors --- on student MH in the short- and long-term remains mixed, limited or else unknown [@Jack_Oster_2023]. For instance, Bacher-Hicks et al. [-@bacherhicks] used internet search data to track in-person bullying and cyberbullying patterns as COVID-19 shifted to remote learning in Spring 2020. Surprisingly, they reported that *both* forms of bullying dropped by 30-35%, citing transitions to virtual learning to be likely a major explanation for these trends. In contrast, Cingel et al. [-@Cingel] used online survey data, in which over 1,000 American adolescents aged 14-16 reported their classroom learning experiences and MH symptoms during the 2020-2021 school year. In this data, virtual as opposed to in-person learning was associated with reduced MH, with those online reporting less satisfaction and social connection than those in-person. In particular, problems were particularly pronounced for students identifying as transgender or gender non-conforming.
 
-\newpage
+Much more research remains to understand the full impacts of the pandemic, and of school closures, in particular, on youth MH. Whilst collecting data on MH, and differentiating between the effects of school closures and other pandemic stressors on MH, are notoriously difficult, these issues remain crucial to investigate. Findings of future search will help guide policy to remediate the consequences and provide more tailored support for affected youth that promote their well-being.
 
+\clearpage
 
-# References
-
-
+# References {.unnumbered}
