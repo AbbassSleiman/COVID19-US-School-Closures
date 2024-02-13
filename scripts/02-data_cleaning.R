@@ -57,7 +57,10 @@ cleaned_test_score_data <- raw_test_score_data |>
     change_2019_2021,
     change_2018_2019,
     change_2017_2018,
-    enrollment
+    enrollment,
+    share_enroll_white,
+    share_enroll_black,
+    share_enroll_hispanic
   )
 
 #### Save data ####
