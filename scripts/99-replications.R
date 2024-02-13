@@ -15,7 +15,7 @@ library(ggplot2)
 
 #### FIGURE 1 ####
 
-data <- read_excel("/cloud/project/data/raw_data/Tracker-of-national-education-response-to-COVID-19_-21May2020.xlsx", 
+data <- read_excel("data/raw_data/Tracker-of-national-education-response-to-COVID-19_-21May2020.xlsx", 
                    sheet = "Continuity of Learning")
 
 master_data <- data[30:36, c(1) ]
