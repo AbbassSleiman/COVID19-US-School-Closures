@@ -73,9 +73,19 @@ Whilst the Jack and Oster’s paper uses a range of data files, we only use some
 
 ### Average Virtual Days By Local Characteristics
 
-'District_Overall_Shares.csv'
+`District_Overall_Shares.csv`
 
-This dataset is available from the COVID-19 School Data Hub [@citeraw1], and provides information on the percentage of the school year that was spent in person, hybrid, or virtual. The data is given for each district, and includes the district’s NCESDistrictID and the state they are a part of.
+This data set is available from the COVID-19 School Data Hub [@citeraw1], and provides information on the percentage of the school year that was spent in person, hybrid, or virtual. The data is given for each district, and includes the district’s NCESDistrictID and the state they are a part of.
+
+`nces_district_directory_2018.dta`
+This dataset is available from the National Center of Education Statistics [@citeraw2]. This dataset provides a variety of metrics for each district, including the state they are a part of, and their NCES district ID. 
+
+`nces_district_enrollment_2018_2020.csv.zip`
+This dataset is available from the National Center of Education Statistics [@citeraw2]. This dataset provides a variety of metrics for each district in 2018, 2019, and 2020, including the state they are a part of, their NCES district ID, and the numer of students enrolled for the races: American Indian or Alaska Native, Asian, Black, Hispanic, Native Hawaiian or other Pacific Islander, or Two or more races. The original file was a Stata file, however, to reduce the size, data on 2018 and 2019 was removed since they were not required for our paper. Furthermore, the file was converted to a csv file, before then compressing it into a zip file.
+
+`broadband_data_2020October.csv`
+This dataset is available from Microsoft’s “United States Broadband Usage Percentages Dataset" Github Repository [@citeraw3]. The data is for October 2020, and gives the broadband usage for each county in the United States, as well as the state that the county is a part of. 
+
 
 ## Methodology
 
