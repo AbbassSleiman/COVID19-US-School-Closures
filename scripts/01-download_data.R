@@ -40,13 +40,6 @@ county_district_data <-
     file = "data/raw_data/nces_district_directory_2018.dta",
   )
 
-## Save Data sets ##
-
-write_parquet(race_data, "data/raw_data/race_data.parquet")
-write_csv(broadband_data, "data/raw_data/broadband_data.csv")
-write_csv(shares_data, "data/raw_data/shares_data.csv")
-write_csv(county_district_data, "data/raw_data/county_district_data.csv")
-
 #### DATASETS FOR FIGURE 3 ####
 
 ## Download Data ##
