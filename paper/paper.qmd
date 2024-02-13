@@ -33,6 +33,10 @@ library(knitr)
 library(janitor)
 library(kableExtra)
 library(DiagrammeR)
+
+# Read data
+cleaned_test_score_data <- read_csv(here("data/analysis_data/cleaned_test_score_data.csv"))
+cleaned_region_data <- read_csv(here("data/analysis_data/cleaned_region_data.csv"))
 ```
 
 # Introduction
@@ -53,7 +57,7 @@ Our paper seeks to assess the robustness and generalisability of Jack and Oster'
 
 We also apply a Dutch-facing lens, examining the extent of school closures and the impact on student learning, in a country whose pandemic circumstances were regarded as most favourable for students [@engzell]. In spite of a short lockdown, equitable school funding and high degree of technological preparedness, we discuss how Dutch students still suffered a loss of the equivalent of one-fifth of a year of education and how the effects were distributed unequally according to student demographics. Throughout, our investigation is conducted using the open-source statistical programming language `R` [@R], with functionalities from `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `here` [@here], `kableExtra` [@kableExtra] and `DiagrammeR` [@DiagrammeR]. 
 
-This paper is structured, as follows. In Section 2, we address the sources of the datasets in the original paper, the methodologies used to collect them, and highlight key features. In Section 3, we conduct a replication of the original study to confirm the robustness of its findings and to design scientific figures that permit a more effective data visualisation. In Section 4, we assess the relevance of these findings to the Netherlands. We compliment this discussion by addressing ethical implications and limitations of the original research, and by giving directions for future analysis.
+This paper is structured, as follows. In Section 2, we address the sources of the data sets in the original paper, the methodologies used to collect them, and highlight key features. In Section 3, we conduct a replication of the original study to confirm the robustness of its findings and to design scientific figures that permit a more effective data visualisation. In Section 4, we assess the relevance of these findings to the Netherlands. We compliment this discussion by addressing ethical implications and limitations of the original research, and by giving directions for future analysis.
 
 # Data
 
@@ -69,7 +73,7 @@ For this paper, the raw data from the “COVID-19, School Closures, and Outcomes
 
 Whilst the Jack and Oster’s paper uses a range of data files, we only use some of these files. The specific files that were used, including their sources and a description of how the data is collected is given below.
 
-### Abbass' Datasets
+### Abbass' data sets
 
 ### Average Virtual Days By Local Characteristics
 
@@ -79,21 +83,39 @@ This data set is available from the COVID-19 School Data Hub [@citeraw1], and pr
 
 `nces_district_directory_2018.dta`
 
-This dataset is available from the National Center of Education Statistics [@citeraw2]. This dataset provides a variety of metrics for each district, including the state they are a part of, and their NCES district ID. 
+This data set is available from the National Center of Education Statistics [@citeraw2]. This data set provides a variety of metrics for each district, including the state they are a part of, and their NCES district ID. 
 
 `nces_district_enrollment_2018_2020.csv.zip`
 
-This dataset is available from the National Center of Education Statistics [@citeraw2]. This dataset provides a variety of metrics for each district in 2018, 2019, and 2020, including the state they are a part of, their NCES district ID, and the numer of students enrolled for the races: American Indian or Alaska Native, Asian, Black, Hispanic, Native Hawaiian or other Pacific Islander, or Two or more races. The original file was a Stata file, however, to reduce the size, data on 2018 and 2019 was removed since they were not required for our paper. Furthermore, the file was converted to a csv file, before then compressing it into a zip file.
+This data set is available from the National Center of Education Statistics [@citeraw2]. This data set provides a variety of metrics. For each district, the total number of students enrollment is reported and is split by the grade (ranging from Kindergarten to Grade 12), by the sex (Male and Female), and by the race (American Indian or Alaska Native, Asian, Black, Hispanic, Native Hawaiian or other Pacific Islander, or Two or more races). This information is reported for the years 2018, 2019, and 2020, and also includes the district's NCES district ID and the state that they are a part of. 
+
+The original file was a Stata file, however, to reduce the size, data on 2018 and 2019 was first removed, since they were not required for our paper, before then converting the file to a csv file, and then compressing it into a zip file. This zip file was uploaded to the raw data folder. 
 
 `broadband_data_2020October.csv`
 
-This dataset is available from Microsoft’s “United States Broadband Usage Percentages Dataset" Github Repository [@kahan2020usbroadband]. The data is for October 2020, and gives the broadband usage for each county in the United States, as well as the state that the county is a part of. 
+This data set is available from Microsoft’s “United States Broadband Usage Percentages Dataset" Github Repository [@kahan2020usbroadband]. The data is for October 2020, and gives the broadband usage for each county in the United States, as well as the state that the county is a part of. 
 
 
 ## Methodology
 
--   address collection / measurement
--   For Krishiv: for research question #1, we actually want data about the rest of the world. We should supplement the data given in the package to see where exactly the United States falls with respect to the rest of the world in terms of \# of days closed, rather than
+### Datacleaning for Abbass' Figure 1
+
+### Average Virtual Days By Local Characteristics - Figure 2
+
+The purpose of [@figure2] is to explore the correlations between certain district and county characteristics, and the average number of virtual school days for the respective district or county. Specifically, we look at broandband usage by county, and the shares of four races (White, Black, Asian, Hispanic) by district. For each county or district, we assign "high" or "low" depending on if their level for the characteristics being explored is above or below their state's median, respectively. By doing so, we allow for the results to be driven by a variation within states, as opposed to variation across states.   
+
+#### Figures on Race
+
+We start by using `nces_district_enrollment_2018_2020.csv.zip`. As previously mentioned, this data set splits the total enrollment into various categories. For our paper, we are concerned specifically with race. Thus, for each district, we calculate the total number of White, Black, Asian, and Hispanic students enrolled. Given the structure of the data, this is done by summing the total enrollment per race for Male and Female for each district. Next the total enrollment for the whole district was calculated, before then calculating the share of total enrollment that each race comprises. 
+
+The data above was then separated into different tables for each race. For each race, we then classified the district as either "High" or "Low" depending on if their share was above or below their respective state's median. 
+
+
+
+Only the required rows and columns are kept, and the certain columns are converted to the numeric class as appropriate. Some enrollment cells did not have a value, indicating that data was not collected for that specific metric. These occurred a handful of times for certain races within certain districts. These NAs were replaced with 0s. Next, total enrollment 
+
+
+
 -   For Abbass: for research question #2, we want to show that significant variation exists in the average number of days spent in virtual school by demographics, specifically, by race, unemployment rates, and political leanings of the area. Ignore school mode with little variation.
 -   For Abbass: please extend the pass rate figure by incorporating data from the replication package of the other paper, in order to stratify by race, percent in-person, FRPL and ELL (for example). You can see the figure here: <https://www.aeaweb.org/research/charts/pandemic-schooling-test-scores-us> Ignore state, probably
 
@@ -103,7 +125,313 @@ This dataset is available from Microsoft’s “United States Broadband Usage Pe
 -   e.g., define "school closures" rigorously (e.g., a closure is identified as Tracker score of 2 or 3... what is a Tracker score?)
 
 # Results
+```{r}
+#| label: tbl-daysclosed
+#| echo: false
+#| tbl-cap: "Top 5 countries by number of school closures from Jan 2020 - Dec 2021"
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(knitr)
+library(here)
+library(readxl)
+library(ggplot2)
 
+# Calculate the number of days schools were closed for each country
+days_closed_per_country <- cleaned_region_data |>
+  group_by(country_name) |>
+  summarize(days_closed = sum(covid_score > 1)) |>
+  arrange(desc(days_closed)) |>
+  select(country_name, days_closed)
+
+days_closed_per_country |>
+  slice(1:5) |>
+  kable(col.names = c("Country", "Days Closed"))
+```
+
+```{r}
+#| label: fig-testscoresbyonline
+#| echo: false
+#| fig-cap: "Test score by percent online (change)"
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(knitr)
+library(here)
+library(readxl)
+library(ggplot2)
+
+# Calculate the total number of enrollments overall
+total_enrollment <- sum(cleaned_test_score_data$enrollment)
+
+# Filter for Math
+filtered_test_data <- cleaned_test_score_data |>
+  filter(subject == "Math")
+
+# Define in-person percent learning categories
+inperson_group <- c("0-25", "25-50", "50-75", "75-100")
+
+# Change data format into long format from wide format and categorize the in-person share
+long_filtered_test_data <- filtered_test_data |>
+  pivot_longer(cols = starts_with("change_"),
+               names_to = "year_group",
+               values_to = "change_in_pass_rate") |>
+  mutate(inperson_category = cut(share_inperson, breaks = c(-Inf, 0.25, 0.5, 0.75, Inf), labels = inperson_group))
+
+# Group by year and calculate summary statistics
+summary_test_data <- long_filtered_test_data |>
+  group_by(year_group, inperson_category) |>
+  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate, 
+                                                     w = enrollment/total_enrollment, 
+                                                     na.rm = TRUE)) |>
+  ungroup()
+
+# Calculate the overall weighted average pass rate change
+overall_summary_test_data <- long_filtered_test_data |>
+  group_by(year_group) |>
+  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate,
+                                                     w = enrollment/total_enrollment,
+                                                     na.rm = TRUE),
+            inperson_category = "Overall")
+
+# Bind both sets of rows together
+summary_test_data <- bind_rows(summary_test_data, overall_summary_test_data)
+
+# Plot the resultant graph
+ggplot(summary_test_data, aes(x = weighted_avg_change_pass * 100, y = inperson_category, color = year_group)) +
+  geom_point(size = 3) + 
+  geom_vline(xintercept = 0, color = "darkgrey") +
+  scale_x_continuous(limits = c(-17, 3)) +
+  scale_y_discrete(limits = c("75-100", "50-75", "25-50", "0-25", "Overall")) +
+  labs(x = "Average Change in Pass Rate (Percentage Points)", y = "Percent In-Person",
+       title = "Average Change in Pass Rate by Year in Math") +
+  scale_color_discrete(labels = c("Spring 2018", "Spring 2019", "Spring 2021")) +
+  labs(color = "Year Category") +
+  theme_minimal()
+```
+
+```{r}
+#| label: fig-testscoresmath
+#| echo: false
+#| message: false
+#| fig-cap: "Update"
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(knitr)
+library(here)
+library(readxl)
+library(ggplot2)
+library(patchwork)
+
+# Filter for Math
+filtered_test_data <- cleaned_test_score_data |>
+  filter(subject == "Math")
+
+# White Share
+white_share <- filtered_test_data |>
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_white, enrollment)
+
+# Black Share
+black_share <- filtered_test_data |>
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_black, enrollment)
+
+# Hispanic Share
+hispanic_share <- filtered_test_data |>
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_hispanic, enrollment)
+
+# Calculate the total number of enrollments overall
+total_enrollment <- sum(white_share$enrollment)
+
+# Define quantiles for white share
+white_share <- white_share |>
+  mutate(quantile = ntile(share_enroll_white, 3)) |>
+  mutate(quantile_level = case_when(
+    quantile == 1 ~ "Low",
+    quantile == 2 ~ "Middle",
+    quantile == 3 ~ "High"
+  ))
+
+# Define quantiles for black share
+black_share <- black_share |>
+  mutate(quantile = ntile(share_enroll_black, 3)) |>
+  mutate(quantile_level = case_when(
+    quantile == 1 ~ "Low",
+    quantile == 2 ~ "Middle",
+    quantile == 3 ~ "High"
+  ))
+
+# Define quantiles for hispanic share
+hispanic_share <- hispanic_share |>
+  mutate(quantile = ntile(share_enroll_hispanic, 3)) |>
+  mutate(quantile_level = case_when(
+    quantile == 1 ~ "Low",
+    quantile == 2 ~ "Middle",
+    quantile == 3 ~ "High"
+  ))
+
+# Group by year and quantile and calculate summary statistics for white share
+summary_white_test_data <- white_share |>
+  pivot_longer(cols = starts_with("change_"),
+               names_to = "year_group",
+               values_to = "change_in_pass_rate") |>
+  group_by(year_group, quantile_level) |>
+  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate, 
+                                                     w = enrollment/total_enrollment, 
+                                                     na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(race = "White")
+
+# Group by year and quantile and calculate summary statistics for black share
+summary_black_test_data <- black_share |>
+  pivot_longer(cols = starts_with("change_"),
+               names_to = "year_group",
+               values_to = "change_in_pass_rate") |>
+  group_by(year_group, quantile_level) |>
+  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate, 
+                                                     w = enrollment/total_enrollment, 
+                                                     na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(race = "Black")
+
+# Group by year and quantile and calculate summary statistics for hispanic share
+summary_hispanic_test_data <- hispanic_share |>
+  pivot_longer(cols = starts_with("change_"),
+               names_to = "year_group",
+               values_to = "change_in_pass_rate") |>
+  group_by(year_group, quantile_level) |>
+  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate, 
+                                                     w = enrollment/total_enrollment, 
+                                                     na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(race = "Hispanic")
+
+# Combine all summary data
+combined_summary_data <- bind_rows(summary_white_test_data, summary_black_test_data, summary_hispanic_test_data)
+
+# Create a ggplot with combined data
+ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100, y = quantile_level, color = year_group, shape = race)) +
+  geom_point(size = 2.85, position = position_jitter(height = 0.1)) + 
+  geom_vline(xintercept = 0, color = "darkgrey") +
+  scale_x_continuous(limits = c(-17, 3)) +
+  scale_y_discrete(limits = c("Low", "Middle", "High")) +
+  labs(x = "Average Change in Pass Rate (Percentage Points)", y = "Quantile Level",
+       title = "Average Change in Pass Rate by Race and Quantile") +
+  scale_color_discrete(labels = c("Spring 2018", "Spring 2019", "Spring 2021")) +
+  labs(color = "Year Category", shape = "Race") +
+  theme_minimal()
+```
+
+```{r}
+#| label: fig-testscoresmath
+#| echo: false
+#| message: false
+#| fig-cap: "Update"
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(knitr)
+library(here)
+library(readxl)
+library(ggplot2)
+library(patchwork)
+
+# Filter for MaELAiltered_test_data <- cleaned_test_score_data |>
+  filter(subject == "ELLLA")
+
+# White Share
+white_share <- filtered_test_data |>
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_white, enrollment)
+
+# Black Share
+black_share <- filtered_test_data |>
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_black, enrollment)
+
+# Hispanic Share
+hispanic_share <- filtered_test_data |>
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_hispanic, enrollment)
+
+# Calculate the total number of enrollments overall
+total_enrollment <- sum(white_share$enrollment)
+
+# Define quantiles for white share
+white_share <- white_share |>
+  mutate(quantile = ntile(share_enroll_white, 3)) |>
+  mutate(quantile_level = case_when(
+    quantile == 1 ~ "Low",
+    quantile == 2 ~ "Middle",
+    quantile == 3 ~ "High"
+  ))
+
+# Define quantiles for black share
+black_share <- black_share |>
+  mutate(quantile = ntile(share_enroll_black, 3)) |>
+  mutate(quantile_level = case_when(
+    quantile == 1 ~ "Low",
+    quantile == 2 ~ "Middle",
+    quantile == 3 ~ "High"
+  ))
+
+# Define quantiles for hispanic share
+hispanic_share <- hispanic_share |>
+  mutate(quantile = ntile(share_enroll_hispanic, 3)) |>
+  mutate(quantile_level = case_when(
+    quantile == 1 ~ "Low",
+    quantile == 2 ~ "Middle",
+    quantile == 3 ~ "High"
+  ))
+
+# Group by year and quantile and calculate summary statistics for white share
+summary_white_test_data <- white_share |>
+  pivot_longer(cols = starts_with("change_"),
+               names_to = "year_group",
+               values_to = "change_in_pass_rate") |>
+  group_by(year_group, quantile_level) |>
+  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate, 
+                                                     w = enrollment/total_enrollment, 
+                                                     na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(race = "White")
+
+# Group by year and quantile and calculate summary statistics for black share
+summary_black_test_data <- black_share |>
+  pivot_longer(cols = starts_with("change_"),
+               names_to = "year_group",
+               values_to = "change_in_pass_rate") |>
+  group_by(year_group, quantile_level) |>
+  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate, 
+                                                     w = enrollment/total_enrollment, 
+                                                     na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(race = "Black")
+
+# Group by year and quantile and calculate summary statistics for hispanic share
+summary_hispanic_test_data <- hispanic_share |>
+  pivot_longer(cols = starts_with("change_"),
+               names_to = "year_group",
+               values_to = "change_in_pass_rate") |>
+  group_by(year_group, quantile_level) |>
+  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate, 
+                                                     w = enrollment/total_enrollment, 
+                                                     na.rm = TRUE)) |>
+  ungroup() |>
+  mutate(race = "Hispanic")
+
+# Combine all summary data
+combined_summary_data <- bind_rows(summary_white_test_data, summary_black_test_data, summary_hispanic_test_data)
+
+# Create a ggplot with combined data
+ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100, y = quantile_level, color = year_group, shape = race)) +
+  geom_point(size = 2.85, position = position_jitter(height = 0.1)) + 
+  geom_vline(xintercept = 0, color = "darkgrey") +
+  scale_x_continuous(limits = c(-17, 3)) +
+  scale_y_discrete(limits = c("Low", "Middle", "High")) +
+  labs(x = "Average Change in Pass Rate (Percentage Points)", y = "Quantile Level",
+       title = "Average Change in Pass Rate by Race and Quantile") +
+  scale_color_discrete(labels = c("Spring 2018", "Spring 2019", "Spring 2021")) +
+  labs(color = "Year Category", shape = "Race") +
+  theme_minimal()
+```
 -   again, the 2023 student paper is very good as a reference
 
 # Discussion
@@ -162,7 +490,7 @@ digraph D {
 
 It is also possible that other types of lockdowns --- such as the closure of counselling services or after-school activities --- might have impacted student learning. This considerable difficulty of separating the effect of school closures from other pandemic-related stressors may bias the results and so affect their validity. One way in which we have helped disentangle these factors is to stratify the test assessments data by race, ELL and FRPL shares per district. By means of this "restriction" technique, we could compare test scores between more homogeneous demographic subgroups and better control for racial and demographic differences that may have impacted student learning outcomes. 
 
-Important sources of bias may have also arisen from the demographic datasets obtained from the US Department of Education's Common Core of Data [@irwin2022report], the US Bureau of Labour Statistics [@bls2021county] and the US Broadband Usage Percentages dataset [@kahan2020usbroadband]. In particular, there are various errors that may exist in census data, collected to determine district-level race shares across the United States. These include *coverage errors*, when a respondent is missed or counted more than once, *non-response errors*, when some information about a respondent is missing, *response errors*, where a question is misunderstood or misreported by a respondent and *processing errors*, when data is incorrectly processed [@censusErrors]. On the other hand, the US Broadband Usage Percentages dataset determines broadband usage by combining data from Microsoft services [@kahan2020usbroadband]. In failing to account for other popular forms of internet services, such those provided by Google, Facebook, Amazon and Apple, this dataset may skew the representation of broadband usage patterns in the United States. 
+Important sources of bias may have also arisen from the demographic data sets obtained from the US Department of Education's Common Core of Data [@irwin2022report], the US Bureau of Labour Statistics [@bls2021county] and the US Broadband Usage Percentages data set [@kahan2020usbroadband]. In particular, there are various errors that may exist in census data, collected to determine district-level race shares across the United States. These include *coverage errors*, when a respondent is missed or counted more than once, *non-response errors*, when some information about a respondent is missing, *response errors*, where a question is misunderstood or misreported by a respondent and *processing errors*, when data is incorrectly processed [@censusErrors]. On the other hand, the US Broadband Usage Percentages data set determines broadband usage by combining data from Microsoft services [@kahan2020usbroadband]. In failing to account for other popular forms of internet services, such those provided by Google, Facebook, Amazon and Apple, this data set may skew the representation of broadband usage patterns in the United States. 
 
 ## Limitations
 
@@ -170,7 +498,7 @@ Being a reproduction, much of the limitations of our analysis arise from those i
 
 What is more, Jack et al.'s [-@Jack2] standardised assessments data excludes information about the corresponding broadband usage and unemployment rates by district. It instead includes data of the corresponding shares of ELL and FRPL students by district. This discrepancy prevents us from telling a full story as to how the pass rates of schools located in districts with lower broadband usage and employment rates, known to face more days of school closed than the national average, were affected. We also question whether the shares of FRPL students are a good estimator of the shares of students with low socioeconomic status. Though FRPL enrollment are widely used in education research as an indicator of student poverty, there is emerging literature that it serves as a poor proxy for poverty [@Fazlul2023]. In fact, using multiple data sources external to the American school system, Fazlul et al. [-@Fazlul2023] show that FRPL rates greatly exceed what would be expected from stated income thresholds for program participation by 35 to 50%. This suggests that the shares of FRPL students per district may not be the most optimal estimator of student poverty, and that more insightful conclusions could have been obtained in examining instead, for instance, the shares of students in low-income households per district.  
 
-Lastly, the state-level assessment data is obtained from only eleven states of the United States, for which district-level data is available. This dataset may not be representative of the academic performance of American students as a whole for two reasons. First, state-standardised assessments remain controversial, with critics questioning whether they accurate indicate academic ability [@yang]. Certainly, they cannot capture the ways in which students learned that were not directly given in the assessment. Second, the sample of eleven states may be too small to be generalisable. Indeed, Parolin and Kee [-@parolin] showed that wide geographic disparities existed in school closures across the country: those concentrated on the West Coast faced declines of \>75% in-person visits to schools, whereas those in the Midwest faced declines of \<25%. Both of these factors put into question the validity and generalisability of the state-assessment data, and could present a valuable direction for future work.
+Lastly, the state-level assessment data is obtained from only eleven states of the United States, for which district-level data is available. This data set may not be representative of the academic performance of American students as a whole for two reasons. First, state-standardised assessments remain controversial, with critics questioning whether they accurate indicate academic ability [@yang]. Certainly, they cannot capture the ways in which students learned that were not directly given in the assessment. Second, the sample of eleven states may be too small to be generalisable. Indeed, Parolin and Kee [-@parolin] showed that wide geographic disparities existed in school closures across the country: those concentrated on the West Coast faced declines of \>75% in-person visits to schools, whereas those in the Midwest faced declines of \<25%. Both of these factors put into question the validity and generalisability of the state-assessment data, and could present a valuable direction for future work.
 
 ## Future Research
 
