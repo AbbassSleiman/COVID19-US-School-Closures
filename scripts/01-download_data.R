@@ -42,10 +42,10 @@ county_district_data <-
 
 ## Save Data sets ##
 
-write_parquet(race_data, "data/analysis_data/race_data.parquet")
-write_csv(broadband_data, "data/analysis_data/broadband_data.csv")
-write_csv(shares_data, "data/analysis_data/shares_data.csv")
-write_csv(county_district_data, "data/analysis_data/county_district_data.csv")
+#write_parquet(race_data, "data/raw_data/race_data.parquet")
+write_csv(broadband_data, "data/raw_data/broadband_data.csv")
+write_csv(shares_data, "data/raw_data/shares_data.csv")
+write_csv(county_district_data, "data/raw_data/county_district_data.csv")
 
 #### DATASETS FOR FIGURE 3 ####
 
