@@ -11,6 +11,7 @@
 #### Workspace setup ####
 library(haven)
 library(tidyverse)
+library(arrow)
 
 
 #### DATASETS FOR FIGURE 2 ####
@@ -41,7 +42,7 @@ county_district_data <-
 
 ## Save Data sets ##
 
-write_csv(race_data, "data/analysis_data/race_data.csv")
+write_parquet(race_data, "data/analysis_data/race_data.parquet")
 write_csv(broadband_data, "data/analysis_data/broadband_data.csv")
 write_csv(shares_data, "data/analysis_data/shares_data.csv")
 write_csv(county_district_data, "data/analysis_data/county_district_data.csv")
