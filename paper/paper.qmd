@@ -89,18 +89,17 @@ This data set is available from the COVID-19 School Data Hub [@citeraw1], and pr
 
 `nces_district_directory_2018.dta`
 
-This data set is available from the National Center of Education Statistics [@citeraw2]. This data set provides a variety of metrics for each district, including the state they are a part of, and their NCES district ID. 
+This data set is available from the National Center of Education Statistics [@citeraw2]. This data set provides a variety of metrics for each district, including the state and county they are a part of, as well as their NCES district ID. 
 
 `nces_district_enrollment_2018_2020.csv.zip`
 
 This data set is available from the National Center of Education Statistics [@citeraw2]. This data set provides a variety of metrics. For each district, the total number of students enrollment is reported and is split by the grade (ranging from Kindergarten to Grade 12), by the sex (Male and Female), and by the race (American Indian or Alaska Native, Asian, Black, Hispanic, Native Hawaiian or other Pacific Islander, or Two or more races). This information is reported for the years 2018, 2019, and 2020, and also includes the district's NCES district ID and the state that they are a part of. 
 
-The original file was a Stata file, however, to reduce the size, data on 2018 and 2019 was first removed, since they were not required for our paper, before then converting the file to a csv file, and then compressing it into a zip file. This zip file was uploaded to the raw data folder. 
+The original file was a Stata file, however, to reduce the size, data on 2018 and 2019 was first removed, since they were not required for our paper, before then converting the file to a csv file, and then compressing it into a zip file. This file was then processed within R. 
 
 `broadband_data_2020October.csv`
 
 This data set is available from Microsoft’s “United States Broadband Usage Percentages Dataset" Github Repository [@kahan2020usbroadband]. The data is for October 2020, and gives the broadband usage for each county in the United States, as well as the state that the county is a part of. 
-
 
 ## Methodology
 
@@ -110,15 +109,13 @@ This data set is available from Microsoft’s “United States Broadband Usage P
 
 The purpose of [@figure2] is to explore the correlations between certain district and county characteristics, and the average number of virtual school days for the respective district or county. Specifically, we look at broandband usage by county, and the shares of four races (White, Black, Asian, Hispanic) by district. For each county or district, we assign "high" or "low" depending on if their level for the characteristics being explored is above or below their state's median, respectively. By doing so, we allow for the results to be driven by a variation within states, as opposed to variation across states.   
 
-#### Figures on Race
+We start by using `nces_district_enrollment_2018_2020.csv.zip`. As previously mentioned, this data set splits the total enrollment into various categories. We start by converting the columns into the numeric class as appropriate. Some enrollment cells did not have a value, indicating that data was not collected for that specific metric. These occurred a handful of times for certain races within certain districts. These NAs were replaced with 0s. For our paper, we are concerned specifically with race. Thus, for each district, we calculate the total number of White, Black, Asian, and Hispanic students enrolled. Given the structure of the data, this is done by summing the total enrollment per race for Male and Female for each district. Next the total enrollment for the whole district was calculated, before then calculating the share of total enrollment that each race comprises. 
 
-We start by using `nces_district_enrollment_2018_2020.csv.zip`. As previously mentioned, this data set splits the total enrollment into various categories. For our paper, we are concerned specifically with race. Thus, for each district, we calculate the total number of White, Black, Asian, and Hispanic students enrolled. Given the structure of the data, this is done by summing the total enrollment per race for Male and Female for each district. Next the total enrollment for the whole district was calculated, before then calculating the share of total enrollment that each race comprises. 
+The data above was then separated into different tables for each race. For each race, we then classified the district as either "High" or "Low" depending on if their share was above or below their respective state's median. Using this data, we were now interested in the number of virtual days that each of these districts had. This information was available in the `District_Overall_Shares.csv` data set. Given that the US average number of school days per year is 180, the percentage for share_virtual was multiplied by 180 for each district. 
 
-The data above was then separated into different tables for each race. For each race, we then classified the district as either "High" or "Low" depending on if their share was above or below their respective state's median. 
+Next, the aforementioned data for each race that separated the districts into quantiles, and the data for the number of virtual days per district were merged. This results in some NAs being produced since the data set on race had more districts than the data on the number of virtual days. Given the lack of data, all NAs were droppped. Finally, the number of virtual days for the "High" quantile and the "Low" quantile were averaged. This results in four data sets, one for each race considered. 
 
-
-
-Only the required rows and columns are kept, and the certain columns are converted to the numeric class as appropriate. Some enrollment cells did not have a value, indicating that data was not collected for that specific metric. These occurred a handful of times for certain races within certain districts. These NAs were replaced with 0s. Next, total enrollment 
+To calculate the information regarding broadband, we started with the `broadband_data_2020October.csv` data set. Only columns that were necessary were kept, and the columns were converted to the numeric class as appropriate. Each county was then classified as either "High" or "Low" depending on if their share was above or below their respective state's median. A single county contains multiple districts, and since our data regarding the number of virtual days was based on district, the data was averaged across districts for each county. `nces_district_directory_2018.dta` provided information on which county each district belonged to, and was merged with the previous data that calculated the average number of virtual days for each district, before then calculating the average number of virtual days for each county. Finally, we average the number of virtual days for the counties labelled "High" and "Low." 
 
 
 
