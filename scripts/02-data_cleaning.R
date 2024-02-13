@@ -105,7 +105,7 @@ broadband_data <- broadband_data |>
 
 ## Read in the raw data ##
 
-zip_file <- "data/raw_data/nces_district_enrollment_2018_2020.csv.zip"
+zip_file <- "/Users/krishiv/Documents/New Folder STA302/nces_district_enrollment_2018_2020.csv.zip"
 # Unzip the file
 data <- unzip(zip_file)
 race_data <- read_csv(data[1], col_types = cols())

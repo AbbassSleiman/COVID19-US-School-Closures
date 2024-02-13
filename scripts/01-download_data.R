@@ -18,7 +18,7 @@ library(arrow)
 
 ## Download Data sets ##
 
-zip_file <- "data/raw_data/nces_district_enrollment_2018_2020.csv.zip"
+zip_file <- "/Users/krishiv/Documents/New Folder STA302/nces_district_enrollment_2018_2020.csv.zip"
 # Unzip the file
 data <- unzip(zip_file)
 race_data <- read_csv(data[1], col_types = cols())
@@ -46,4 +46,4 @@ county_district_data <-
 test_scores_data <- read_dta(here::here("data/raw_data/scores_lm_demographics.dta"))
 
 ## Save data ##
-write_csv(test_scores_data, "data/raw_data/scores_lm_demographics.csv") #ANALYSIS_DATA?
+write_csv(test_scores_data, "data/raw_data/scores_lm_demographics.csv")
