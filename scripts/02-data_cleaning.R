@@ -239,6 +239,9 @@ averaged_white_share <- white_share |>
   group_by(QUANTILE_LABEL) |>
   summarise(average = mean(share_virtual, na.rm = TRUE))
 
+averaged_white_share <- averaged_white_share |>
+  filter(QUANTILE_LABEL != "NA")
+
 write_csv(averaged_white_share, "data/analysis_data/averaged_white_share.csv")
 
 #Black
@@ -247,6 +250,9 @@ black_share <- inner_join(shares_data, black_share,
 averaged_black_share <- black_share |>
   group_by(QUANTILE_LABEL) |>
   summarise(average = mean(share_virtual, na.rm = TRUE))
+
+averaged_black_share <- averaged_black_share |>
+  filter(QUANTILE_LABEL != "NA")
 
 write_csv(averaged_black_share, "data/analysis_data/averaged_black_share.csv")
 
@@ -257,6 +263,9 @@ asian_share <- inner_join(shares_data, asian_share,
 averaged_asian_share <- asian_share |>
   group_by(QUANTILE_LABEL) |>
   summarise(average = mean(share_virtual, na.rm = TRUE))
+
+averaged_asian_share <- averaged_asian_share |>
+  filter(QUANTILE_LABEL != "NA")
 
 write_csv(averaged_asian_share, "data/analysis_data/averaged_asian_share.csv")
 

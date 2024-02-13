@@ -39,6 +39,10 @@ cleaned_test_score_data <- read_csv(here("data/analysis_data/cleaned_test_score_
 cleaned_region_data <- read_csv(here("data/analysis_data/cleaned_region_data.csv"))
 
 averaged_broadband <- read_csv(here("data/analysis_data/averaged_broadband.csv"))
+averaged_white_share <- read_csv(here("data/analysis_data/averaged_white_share.csv"))
+averaged_black_share <- read_csv(here("data/analysis_data/averaged_black_share.csv"))
+averaged_asian_share <- read_csv(here("data/analysis_data/averaged_asian_share.csv"))
+averaged_hispanic_share <- read_csv(here("data/analysis_data/averaged_hispanic_share.csv"))
 ```
 
 # Introduction
@@ -178,6 +182,116 @@ ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))
 ```
+
+
+```{r}
+#| label: fig-white
+#| echo: false
+#| fig-cap: "Share White"
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(knitr)
+library(here)
+library(readxl)
+library(ggplot2)
+
+ggplot(averaged_white_share, aes(x = QUANTILE_LABEL, y = average)) +
+  geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
+  labs(x = "Quantile Label", y = "Average") +
+  ggtitle("Average Days Virtual by Quantile") +
+  geom_text(aes(label = sprintf("%.0f", average)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, size = 3) +
+  labs(x = "Quantile", y = "Average Days Virtual") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+```{r}
+#| label: fig-black
+#| echo: false
+#| fig-cap: "Share Black"
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(knitr)
+library(here)
+library(readxl)
+library(ggplot2)
+
+ggplot(averaged_black_share, aes(x = QUANTILE_LABEL, y = average)) +
+  geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
+  labs(x = "Quantile Label", y = "Average") +
+  ggtitle("Average Days Virtual by Quantile") +
+  geom_text(aes(label = sprintf("%.0f", average)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, size = 3) +
+  labs(x = "Quantile", y = "Average Days Virtual") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+```{r}
+#| label: fig-asian
+#| echo: false
+#| fig-cap: "Share Asian"
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(knitr)
+library(here)
+library(readxl)
+library(ggplot2)
+
+ggplot(averaged_asian_share, aes(x = QUANTILE_LABEL, y = average)) +
+  geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
+  labs(x = "Quantile Label", y = "Average") +
+  ggtitle("Average Days Virtual by Quantile") +
+  geom_text(aes(label = sprintf("%.0f", average)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, size = 3) +
+  labs(x = "Quantile", y = "Average Days Virtual") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+
+
+```{r}
+#| label: fig-hispanic
+#| echo: false
+#| fig-cap: "Share Hispanic"
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(knitr)
+library(here)
+library(readxl)
+library(ggplot2)
+
+ggplot(averaged_hispanic_share, aes(x = QUANTILE_LABEL, y = average)) +
+  geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
+  labs(x = "Quantile Label", y = "Average") +
+  ggtitle("Average Days Virtual by Quantile") +
+  geom_text(aes(label = sprintf("%.0f", average)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, size = 3) +
+  labs(x = "Quantile", y = "Average Days Virtual") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
+
+
+
 
 
 ```{r}
@@ -353,117 +467,6 @@ ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100, y = quanti
   theme_minimal()
 ```
 
-```{r}
-#| label: fig-testscoresmath
-#| echo: false
-#| message: false
-#| fig-cap: "Update"
-library(tidyverse)
-library(janitor)
-library(dplyr)
-library(knitr)
-library(here)
-library(readxl)
-library(ggplot2)
-library(patchwork)
-
-# Filter for MaELAiltered_test_data <- cleaned_test_score_data |>
-  filter(subject == "ELLLA")
-
-# White Share
-white_share <- filtered_test_data |>
-  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_white, enrollment)
-
-# Black Share
-black_share <- filtered_test_data |>
-  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_black, enrollment)
-
-# Hispanic Share
-hispanic_share <- filtered_test_data |>
-  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_hispanic, enrollment)
-
-# Calculate the total number of enrollments overall
-total_enrollment <- sum(white_share$enrollment)
-
-# Define quantiles for white share
-white_share <- white_share |>
-  mutate(quantile = ntile(share_enroll_white, 3)) |>
-  mutate(quantile_level = case_when(
-    quantile == 1 ~ "Low",
-    quantile == 2 ~ "Middle",
-    quantile == 3 ~ "High"
-  ))
-
-# Define quantiles for black share
-black_share <- black_share |>
-  mutate(quantile = ntile(share_enroll_black, 3)) |>
-  mutate(quantile_level = case_when(
-    quantile == 1 ~ "Low",
-    quantile == 2 ~ "Middle",
-    quantile == 3 ~ "High"
-  ))
-
-# Define quantiles for hispanic share
-hispanic_share <- hispanic_share |>
-  mutate(quantile = ntile(share_enroll_hispanic, 3)) |>
-  mutate(quantile_level = case_when(
-    quantile == 1 ~ "Low",
-    quantile == 2 ~ "Middle",
-    quantile == 3 ~ "High"
-  ))
-
-# Group by year and quantile and calculate summary statistics for white share
-summary_white_test_data <- white_share |>
-  pivot_longer(cols = starts_with("change_"),
-               names_to = "year_group",
-               values_to = "change_in_pass_rate") |>
-  group_by(year_group, quantile_level) |>
-  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate, 
-                                                     w = enrollment/total_enrollment, 
-                                                     na.rm = TRUE)) |>
-  ungroup() |>
-  mutate(race = "White")
-
-# Group by year and quantile and calculate summary statistics for black share
-summary_black_test_data <- black_share |>
-  pivot_longer(cols = starts_with("change_"),
-               names_to = "year_group",
-               values_to = "change_in_pass_rate") |>
-  group_by(year_group, quantile_level) |>
-  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate, 
-                                                     w = enrollment/total_enrollment, 
-                                                     na.rm = TRUE)) |>
-  ungroup() |>
-  mutate(race = "Black")
-
-# Group by year and quantile and calculate summary statistics for hispanic share
-summary_hispanic_test_data <- hispanic_share |>
-  pivot_longer(cols = starts_with("change_"),
-               names_to = "year_group",
-               values_to = "change_in_pass_rate") |>
-  group_by(year_group, quantile_level) |>
-  summarize(weighted_avg_change_pass = weighted.mean(change_in_pass_rate, 
-                                                     w = enrollment/total_enrollment, 
-                                                     na.rm = TRUE)) |>
-  ungroup() |>
-  mutate(race = "Hispanic")
-
-# Combine all summary data
-combined_summary_data <- bind_rows(summary_white_test_data, summary_black_test_data, summary_hispanic_test_data)
-
-# Create a ggplot with combined data
-ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100, y = quantile_level, color = year_group, shape = race)) +
-  geom_point(size = 2.85, position = position_jitter(height = 0.1)) + 
-  geom_vline(xintercept = 0, color = "darkgrey") +
-  scale_x_continuous(limits = c(-17, 3)) +
-  scale_y_discrete(limits = c("Low", "Middle", "High")) +
-  labs(x = "Average Change in Pass Rate (Percentage Points)", y = "Quantile Level",
-       title = "Average Change in Pass Rate by Race and Quantile") +
-  scale_color_discrete(labels = c("Spring 2018", "Spring 2019", "Spring 2021")) +
-  labs(color = "Year Category", shape = "Race") +
-  theme_minimal()
-```
--   again, the 2023 student paper is very good as a reference
 
 
 
