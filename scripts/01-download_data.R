@@ -17,7 +17,7 @@ library(tidyverse)
 
 ## Download Data sets ##
 
-zip_file <- "data/raw_data/output_data.csv.zip"
+zip_file <- "data/raw_data/nces_district_enrollment_2018_2020.csv.zip"
 # Unzip the file
 data <- unzip(zip_file)
 race_data <- read_csv(data[1], col_types = cols())
@@ -53,5 +53,3 @@ test_scores_data <- read_dta(here::here("data/raw_data/scores_lm_demographics.dt
 
 ## Save data ##
 write_csv(test_scores_data, "data/raw_data/scores_lm_demographics.csv") #ANALYSIS_DATA?
-
-         
