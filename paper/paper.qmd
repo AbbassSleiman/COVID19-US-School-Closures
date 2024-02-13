@@ -59,13 +59,23 @@ This paper is structured, as follows. In Section 2, we address the sources of th
 
 ## Source
 
-The original paper used for replication is Jack and Oster's "COVID-19, School Closures, and Outcomes" [-@Jack_Oster_2023], published in the American Economic Association's *Journal of Economic Perspectives*. To investigate the degree of school closures in the United States, and their attendant effects on children, they pose the following three questions:
+For this paper, the raw data from the “COVID-19, School Closures, and Outcomes” paper were used [-@Jack_Oster_2023], published in the American Economic Association's *Journal of Economic Perspectives* [@citeAEA]. To investigate the degree of school closures in the United States, and their attendant effects on children, they pose the following three questions:
 
 (1) Relative to the global picture, what is the extent of school closures in the United States?
 
 (2) What are the demographic patterns underlying these closures? Namely, how are the number of days of school closed correlated with ethnicity, unemployment rate and political leanings at the district- or county-level?
 
 (3) What is the short-term impact of school closures on student academic performance and learning inequalities?
+
+Whilst the Jack and Oster’s paper uses a range of data files, we only use some of these files. The specific files that were used, including their sources and a description of how the data is collected is given below.
+
+### Abbass' Datasets
+
+### Average Virtual Days By Local Characteristics
+
+'District_Overall_Shares.csv'
+
+This dataset is available from the COVID-19 School Data Hub [@citeraw1], and provides information on the percentage of the school year that was spent in person, hybrid, or virtual. The data is given for each district, and includes the district’s NCESDistrictID and the state they are a part of.
 
 ## Methodology
 
