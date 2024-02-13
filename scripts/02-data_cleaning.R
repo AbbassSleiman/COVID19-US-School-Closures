@@ -82,7 +82,7 @@ write_csv(cleaned_test_score_data, "data/analysis_data/cleaned_test_score_data.c
 
 broadband_data <-
   read_csv(
-    file = "project/raw_data/broadband_data_2020October.csv",
+    file = "data/raw_data/broadband_data_2020October.csv",
     show_col_types = FALSE
   )
 
@@ -229,18 +229,6 @@ averaged_broadband <- final_broadband_data |>
   summarise(average = mean(average_share_virtual, na.rm = TRUE))
 
 write_csv(averaged_broadband, "data/analysis_data/averaged_broadband.csv")
-
-# AVERAGING POLITICAL DATA BASED ON QUANTILES #
-
-final_political_data <- inner_join(averaged_data, political_data, 
-                                   by = c("county_code" = "county_fips"))
-
-averaged_political <- final_political_data |>
-  group_by(QUANTILE_LABEL) |>
-  summarise(average = mean(average_share_virtual, na.rm = TRUE))
-
-write_csv(averaged_political, "data/analysis_data/averaged_political.csv")
-
 
 # AVERAGING RACE DATA BASED ON QUANTILES #
 

@@ -37,6 +37,8 @@ library(DiagrammeR)
 # Read data
 cleaned_test_score_data <- read_csv(here("data/analysis_data/cleaned_test_score_data.csv"))
 cleaned_region_data <- read_csv(here("data/analysis_data/cleaned_region_data.csv"))
+
+averaged_broadband <- read_csv(here("data/analysis_data/averaged_broadband.csv"))
 ```
 
 # Introduction
@@ -148,6 +150,35 @@ days_closed_per_country |>
   slice(1:5) |>
   kable(col.names = c("Country", "Days Closed"))
 ```
+
+
+
+
+
+```{r}
+#| label: fig-broadband
+#| echo: false
+#| fig-cap: "BroadBand"
+library(tidyverse)
+library(janitor)
+library(dplyr)
+library(knitr)
+library(here)
+library(readxl)
+library(ggplot2)
+
+ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
+  geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
+  labs(x = "Quantile Label", y = "Average") +
+  ggtitle("Average Days Virtual by Quantile") +
+  geom_text(aes(label = sprintf("%.0f", average)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, size = 3) +
+  labs(x = "Quantile", y = "Average Days Virtual") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
 
 ```{r}
 #| label: fig-testscoresbyonline
@@ -433,6 +464,10 @@ ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100, y = quanti
   theme_minimal()
 ```
 -   again, the 2023 student paper is very good as a reference
+
+
+
+
 
 # Discussion
 
