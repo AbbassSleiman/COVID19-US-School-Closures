@@ -1,11 +1,10 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
+# Purpose: Downloads the required raw data to use in data cleaning
 # Author: Krishiv Jain, Julia Kim, Abbass Sleiman
-# Date: 12 February 2024
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Date: 14 February 2024
+# Contact: krishiv.jain@mail.utoronto.ca, abbass.sleiman@mail.utoronto.ca, juliaym.kim@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: Follow instructions in README to download data on race enrollment
 
 
 #### Workspace setup ####

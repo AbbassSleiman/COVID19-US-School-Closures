@@ -1,7 +1,7 @@
 #### Preamble ####
 # Purpose: Simulates 3 data sets 
 # Author: Krishiv Jain, Julia Kim, Abbass Sleiman
-# Date: 12 February 2024
+# Date: 14 February 2024
 # Contact: krishiv.jain@mail.utoronto.ca, abbass.sleiman@mail.utoronto.ca, juliaym.kim@mail.utoronto.ca
 # License: MIT
 # Pre-requisites: none

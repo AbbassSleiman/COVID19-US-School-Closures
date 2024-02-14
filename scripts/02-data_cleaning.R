@@ -1,11 +1,10 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
+# Purpose: Cleans the various raw data sets that have been used prior to analysis and creation of figures
+# Author: Krishiv Jain, Julia Kim, Abbass Sleiman
+# Date: 14 February 2024
+# Contact: krishiv.jain@mail.utoronto.ca, abbass.sleiman@mail.utoronto.ca, juliaym.kim@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Pre-requisites: run 01-download_data.R, and download the relevant data as outlined in the README. 
 
 #### Workspace setup ####
 library(tidyverse)
@@ -17,6 +16,7 @@ library(here)
 library(haven)
 library(labelled)
 
+#### FIGURE 1 DATA CLEANING - REGION DATA ####
 
 #### Clean region data ####
 raw_region_data <- read_csv("data/raw_data/region_data.csv")
@@ -52,31 +52,7 @@ cleaned_region_data <- country_region_data[cleaned_region_data, on = "country_na
 
 cleaned_region_data <- as.data.frame(cleaned_region_data)
 
-
-#### Clean test score data ####
-raw_test_score_data <- read_csv("data/raw_data/scores_lm_demographics.csv")
-
-cleaned_test_score_data <- raw_test_score_data |>
-  janitor::clean_names() |>
-  select(
-    share_inperson,
-    subject,
-    change_2019_2021,
-    change_2018_2019,
-    change_2017_2018,
-    enrollment,
-    share_enroll_white,
-    share_enroll_black,
-    share_enroll_hispanic
-  )
-
-#### Save data ####
-fwrite(cleaned_region_data, "data/analysis_data/cleaned_region_data.csv", row.names = FALSE)
-write_csv(cleaned_test_score_data, "data/analysis_data/cleaned_test_score_data.csv")
-
-
 #### FIGURE 2 DATA CLEANING - AVERAGE VIRTUAL DAYS BY CHARACTERISTIC ####
-
 
 # CLEANING BROADBAND RAW DATA #
 
@@ -280,3 +256,27 @@ averaged_hispanic_share <- averaged_hispanic_share |>
   filter(QUANTILE_LABEL != "NA")
 
 write_csv(averaged_hispanic_share, "data/analysis_data/averaged_hispanic_share.csv")
+
+
+#### FIGURE 3 DATA CLEANING - TEST SCORE DATA ####
+
+#### Clean test score data ####
+raw_test_score_data <- read_csv("data/raw_data/scores_lm_demographics.csv")
+
+cleaned_test_score_data <- raw_test_score_data |>
+  janitor::clean_names() |>
+  select(
+    share_inperson,
+    subject,
+    change_2019_2021,
+    change_2018_2019,
+    change_2017_2018,
+    enrollment,
+    share_enroll_white,
+    share_enroll_black,
+    share_enroll_hispanic
+  )
+
+#### Save data ####
+fwrite(cleaned_region_data, "data/analysis_data/cleaned_region_data.csv", row.names = FALSE)
+write_csv(cleaned_test_score_data, "data/analysis_data/cleaned_test_score_data.csv")

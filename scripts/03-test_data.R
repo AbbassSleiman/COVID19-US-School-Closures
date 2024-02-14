@@ -4,7 +4,7 @@
 # Date: 12 February 2024
 # Contact: krishiv.jain@mail.utoronto.ca, abbass.sleiman@mail.utoronto.ca, juliaym.kim@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: Downloaded the data files through 01-download_data.R
+# Pre-requisites: Downloaded the data files through 01-download_data.R and through the instructions in the README
 
 
 #### Workspace setup ####
