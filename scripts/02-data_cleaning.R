@@ -275,8 +275,7 @@ cleaned_test_score_data <- raw_test_score_data |>
     enrollment,
     share_enroll_white,
     share_enroll_black,
-    share_enroll_hispanic,
-    state
+    share_enroll_hispanic
   )
 
 #### Save data ####

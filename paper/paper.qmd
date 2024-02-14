@@ -543,15 +543,16 @@ combined_summary_data <- bind_rows(summary_white_test_data, summary_black_test_d
 
 # Create a ggplot with combined data
 ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100, 
-                                                    y = quantile_level, color = year_group, shape = race)) +
+                                                    y = quantile_level, shape = year_group, color = race)) +
   geom_point(size = 2.85, position = position_jitter(height = 0.1)) + 
   geom_vline(xintercept = 0, color = "darkgrey") +
   scale_x_continuous(limits = c(-17, 3)) +
   scale_y_discrete(limits = c("Low", "Middle", "High")) +
   labs(x = "Average Change in Pass Rate (Percentage Points)", y = "Quantile Level",
        title = "Average Change in Pass Rate by Race and Quantile") +
-  scale_color_discrete(labels = c("Spring 2018", "Spring 2019", "Spring 2021")) +
-  labs(color = "Year Category", shape = "Race") +
+  scale_color_discrete(labels = c("Black", "Hispanic", "White")) +
+  scale_shape_discrete(labels = c("Spring 2018", "Spring 2019", "Spring 2021")) +
+  labs(shape = "Year Category", color = "Race") +
   theme_minimal()
 ```
 
@@ -647,15 +648,16 @@ combined_summary_data <- bind_rows(summary_white_test_data, summary_black_test_d
 
 # Create a ggplot with combined data
 ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100, 
-                                                   y = quantile_level, color = year_group, shape = race)) +
+                                                   y = quantile_level, shape = year_group, color = race)) +
   geom_point(size = 2.85, position = position_jitter(height = 0.1)) + 
   geom_vline(xintercept = 0, color = "darkgrey") +
   scale_x_continuous(limits = c(-17, 3)) +
   scale_y_discrete(limits = c("Low", "Middle", "High")) +
   labs(x = "Average Change in Pass Rate (Percentage Points)", y = "Quantile Level",
        title = "Average Change in Pass Rate by Race and Quantile") +
-  scale_color_discrete(labels = c("Spring 2018", "Spring 2019", "Spring 2021")) +
-  labs(color = "Year Category", shape = "Race") +
+  scale_color_discrete(labels = c("Black", "Hispanic", "White")) +
+  scale_shape_discrete(labels = c("Spring 2018", "Spring 2019", "Spring 2021")) +
+  labs(shape = "Year Category", color = "Race") +
   theme_minimal()
 ```
 
