@@ -1,13 +1,13 @@
 #### Preamble ####
-# Purpose: Simulates various data sets 
+# Purpose: Simulates 3 data sets 
 # Author: Krishiv Jain, Julia Kim, Abbass Sleiman
 # Date: 12 February 2024
-# Contact: 
+# Contact: krishiv.jain@mail.utoronto.ca, abbass.sleiman@mail.utoronto.ca, juliaym.kim@mail.utoronto.ca
 # License: MIT
+# Pre-requisites: none
 
 #### Workspace setup ####
 library(tidyverse)
-# [...UPDATE THIS...]
 
 #### SIMULATE DATA ####
 
@@ -51,6 +51,4 @@ simulated_data2$broadband_usage |> class() == "numeric"
 is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) abs(x - round(x)) < tol
 is.wholenumber(simulated_data2$white_students)
 is.wholenumber(simulated_data2$black_students)
-
-print("hello")
 
