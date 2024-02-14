@@ -253,7 +253,7 @@ whiteplot <- ggplot(averaged_white_share, aes(x = QUANTILE_LABEL, y = average)) 
   ggtitle("White Share") +
   geom_text(aes(label = sprintf("%.0f", average)), 
             position = position_dodge(width = 0.9), 
-            vjust = -0.5, size = 3) +
+            vjust = -0.5, size = 2.75) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 10),
                 axis.title.x = element_text(size = 9),
