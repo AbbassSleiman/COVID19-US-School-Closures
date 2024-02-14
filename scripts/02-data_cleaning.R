@@ -165,7 +165,7 @@ hispanic_share <- hispanic_share |>
 
 shares_data <-
   read_csv(
-    file = "/Users/krishiv/Downloads/302 Paper 2/193523-V1/Raw/District_Overall_Shares.csv",
+    file = "data/raw_data/District_Overall_Shares.csv",
     show_col_types = FALSE
   )
 
@@ -178,7 +178,7 @@ shares_data$NCESDistrictID <- as.numeric(shares_data$NCESDistrictID)
 
 county_district_data <-
   read_dta(
-    file = "/Users/krishiv/Downloads/302 Paper 2/193523-V1/Raw/nces_district_directory_2018.dta",
+    file = "data/raw_data/nces_district_directory_2018.dta",
   )
 
 county_district_data <- select(county_district_data, leaid, county_code)
