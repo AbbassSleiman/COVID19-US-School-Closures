@@ -19,6 +19,7 @@ The repo is structured as follows:
 -   `scripts` contains the R scripts used to simulate (`00-simulate_data.R`), download (`01-download_data.R`), clean (`02-data_cleaning.R`) and test data (`03-test_data.R`), as well as to replicate the important figures from the original paper (`99-replications.R`)
 
 - Note: The `nces_district_enrollment_2018_2020.dta` is not included in `input/data` given its size. This data can be downloaded from Jack and Oster's "COVID-19, School Closures, and Outcomes" paper's replication package, found in the folder `Raw` (https://www.aeaweb.org/articles?id=10.1257/jep.37.4.51). In order to reproduce our code, download the data, and then change line 85 in (`02-data_cleaning.R`) to the appropriate file path of the file. 
+- Note 2: The `region_data.csv` is not the original raw file as found in Jack and Oster's replication package. Instead, the file titled `OxCGRT_compact_national_v1` is the original raw file as found in the replication package. Due to the original's size, `region_data.csv` simply omits all columns after, and including, the one titled "C1M_Flag" as the information present is not relevant to the study at hand.
 
 ## LLM Usage  
 
