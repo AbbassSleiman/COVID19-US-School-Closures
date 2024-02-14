@@ -53,7 +53,7 @@ On March 11, 2020, the World Health Organisation (WHO) declared the COVID-19 out
 
 Before the pandemic, there was a modestly-sized economic literature on the impact of school closures on learning, with data generally drawn from short-term episodes such as teacher strikes [@Jack_Oster_2023]. It was widely observed that time outside of school caused loss of literacy and numeracy skills, more so among the marginalised, and widened student achievement gaps [@pastresearch]. These findings are certainly suggestive of the possible effects of COVID-19 school closures on student learning. However, as the pandemic's disruptions typically surpassed previous episodes of school closures, the scope for inference from earlier works is limited [@Jack_Oster_2023]. A paper by Jack and Oster, "COVID-19, School Closures, and Outcomes" [-@Jack_Oster_2023] published in American Economic Association's *Journal of Economic Perspectives*, sought to address this gap, by focusing on emerging short-term evidence of the impact of COVID-19 school closures on academic performance.
 
-In studying the scope of school closures across the United States, they reported that the country experienced, on average, one of the highest number of days of school closed between January 2020 to December 2021 worldwide [@Jack_Oster_2023]. Jack and Oster [-@Jack_Oster_2023] also found that the duration of school closures varies with local demographic characteristics, with more disadvantaged districts facing more prolonged closures. The study population was grade 3 to 8 students across 11 major American states, being Colorado (CO), Connecticut (CT), Massachusetts (MA), Minnesota (MN), Mississippi (MI), Ohio (OH), Rhode Island (RI), Virginia (VA), Wisconsin (WI), West Virginia (WV) and Wyoming (WY). The estimand was the impact of COVID-19 closures on academic performance. They found considerable declines in test scores during the 2020-2021 academic year, with declines larger in school districts with less in-person instruction [@Jack_Oster_2023]. On average, pass rates fell from 2019 to 2021 by an average of 12.8 percentage points in mathematics and 6.8 in English Language Arts (ELA) [@Jack_Oster_2023].
+In studying the scope of school closures across the United States (US), they reported that the country experienced, on average, one of the highest number of days of school closed between January 2020 to December 2021 worldwide [@Jack_Oster_2023]. Jack and Oster [-@Jack_Oster_2023] also found that the duration of school closures varies with local demographic characteristics, with more disadvantaged districts facing more prolonged closures. The study population was grade 3 to 8 students across 11 major American states, being Colorado (CO), Connecticut (CT), Massachusetts (MA), Minnesota (MN), Mississippi (MI), Ohio (OH), Rhode Island (RI), Virginia (VA), Wisconsin (WI), West Virginia (WV) and Wyoming (WY). The estimand was the impact of COVID-19 closures on academic performance. They found considerable declines in test scores during the 2020-2021 academic year, with declines larger in school districts with less in-person instruction [@Jack_Oster_2023]. On average, pass rates fell from 2019 to 2021 by an average of 12.8 percentage points in mathematics and 6.8 in English Language Arts (ELA) [@Jack_Oster_2023].
 
 Our paper seeks to assess the robustness and generalisability of Jack and Oster's work. We successfully replicate and extend three of its major research claims:
 
@@ -63,7 +63,7 @@ Our paper seeks to assess the robustness and generalisability of Jack and Oster'
 
 (3) School closures contributed significantly to the decline in students' pass rates in mathematics and ELA in the 2020-2021 school year. Changes in ELA scores were smaller than mathematics scores, but significantly larger in districts with larger populations of students who are Black, Hispanic, English Language Learners (ELL) or eligible for free and reduced price lunch (FRPL).
 
-We also apply a Dutch-facing lens, examining the extent of school closures and the impact on student learning, in a country whose pandemic circumstances were regarded as most favourable for students [@engzell]. In spite of a short lockdown, equitable school funding and high degree of technological preparedness, we discuss how Dutch students still suffered a loss of the equivalent of one-fifth of a year of education and how the effects were distributed unequally according to student demographics. Throughout, our investigation is conducted using the open-source statistical programming language `R` [@R], with functionalities from `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `here` [@here], `kableExtra` [@kableExtra], `DiagrammeR` [@DiagrammeR], `readxl` [@readxl] and `patchwork` [@patchwork]. 
+We also apply a Dutch-facing lens, examining the extent of school closures and the impact on student learning, in a country whose pandemic circumstances were regarded as most favourable for students [@engzell]. In spite of a short lockdown, equitable school funding and high degree of technological preparedness, we discuss how Dutch students still suffered a loss of the equivalent of one-fifth of a year of education and how the effects were distributed unequally according to student demographics. Throughout, our investigation is conducted using the open-source statistical programming language `R` [@R], with functionalities from `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `here` [@here], `kableExtra` [@kableExtra], `DiagrammeR` [@DiagrammeR], `readxl` [@readxl], `patchwork` [@patchwork] and `gridExtra` [@gridExtra]. 
 
 This paper is structured, as follows. In Section 2, we address the sources of the data sets in the original paper, the methodologies used to collect them, and highlight key features. In Section 3, we conduct a replication of the original study to confirm the robustness of its findings and to design scientific figures that permit a more effective data visualisation. In Section 4, we assess the relevance of these findings to the Netherlands. We compliment this discussion by addressing ethical implications and limitations of the original research, and by giving directions for future analysis.
 
@@ -83,6 +83,14 @@ Whilst the work by Jack and Oster [-@Jack_Oster_2023] uses number of data files,
 
 ### Extent of School Closures in the United States and the World 
 
+`region_data.csv`
+
+`county_region.csv`
+
+This dataset includes the country and region name 
+
+country_name,region_name
+
 
 ### Average Number of School Closures by Local Demographic Characteristics
 
@@ -99,18 +107,21 @@ This dataset is obtained from the National Center of Education Statistics [@cite
 
 This dataset is obtained from the National Center of Education Statistics [@citeraw2]. For each district and for each of the years 2018, 2019 and 2020, it reports the total student enrollment, split by grade (ranging from Kindergarten to Grade 12), sex (Male and Female), and ethnic class (American Indian or Alaska Native, Asian, Black, Hispanic, Native Hawaiian or other Pacific Islander, or Two or more races). The data is collected via surveys and supplied by state agencies to NCES [@USDeptCommerce]. 
 
-The original file was a Stata file, however, to reduce the size, data on 2018 and 2019 was first removed, since they were not required for our paper, before then converting the file to a csv file, and then compressing it into a zip file. This file was then processed within R. 
+Note the original file was a `Stata` file of very large size. To reduce its size, 2018 and 2019 data were removed, being unnecessary for our paper. The file was then converted to a `.csv` file and compressed into a `.zip` file, before being processed in R for analysis.  
 
 `broadband_data_2020October.csv`
 
-This data set is available from Microsoft’s “United States Broadband Usage Percentages Dataset" Github Repository [@kahan2020usbroadband]. The data is for October 2020, and gives the broadband usage for each county in the United States, as well as the state that the county is a part of. 
+This dataset is available from Microsoft’s “United States Broadband Usage Percentages Dataset" GitHub Repository [@kahan2020usbroadband]. The data consists of broadband usage percentages at the US county-level in October 2020, obtained from anonymised data Microsoft collects. In less technical terms, this means that every time a device receives an update from or connects to a Microsoft service, Microsoft servers make an estimate of its throughput speed and determine its location at the zip-code level [@kahan2020usbroadband]. After making such measurements, noise is added to data aggregations, preventing leakage about specific individuals in the dataset and ensuring differential privacy. 
 
+### Standardised Assessment Scores 
+
+`scores_lm_demographics.csv`
+ 
 
 ## Methodology
+### Extent of School Closures in the United States and the World 
 
-### Datacleaning for Abbass' Figure 1
-
-### Average Virtual Days By Local Characteristics - Figure 2
+### Average Number of School Closures by Local Demographic Characteristics
 
 The purpose of [@figure2] is to explore the correlations between certain district and county characteristics, and the average number of virtual school days for the respective district or county. Specifically, we look at broandband usage by county, and the shares of four races (White, Black, Asian, Hispanic) by district. For each county or district, we assign "high" or "low" depending on if their level for the characteristics being explored is above or below their state's median, respectively. By doing so, we allow for the results to be driven by a variation within states, as opposed to variation across states.   
 
@@ -122,15 +133,8 @@ Next, the aforementioned data for each race that separated the districts into qu
 
 To calculate the information regarding broadband, we started with the `broadband_data_2020October.csv` data set. Only columns that were necessary were kept, and the columns were converted to the numeric class as appropriate. Each county was then classified as either "High" or "Low" depending on if their share was above or below their respective state's median. A single county contains multiple districts, and since our data regarding the number of virtual days was based on district, the data was averaged across districts for each county. `nces_district_directory_2018.dta` provided information on which county each district belonged to, and was merged with the previous data that calculated the average number of virtual days for each district, before then calculating the average number of virtual days for each county. Finally, we average the number of virtual days for the counties labelled "High" and "Low." 
 
+### Standardised Assessment Scores 
 
-
--   For Abbass: for research question #2, we want to show that significant variation exists in the average number of days spent in virtual school by demographics, specifically, by race, unemployment rates, and political leanings of the area. Ignore school mode with little variation.
--   For Abbass: please extend the pass rate figure by incorporating data from the replication package of the other paper, in order to stratify by race, percent in-person, FRPL and ELL (for example). You can see the figure here: <https://www.aeaweb.org/research/charts/pandemic-schooling-test-scores-us> Ignore state, probably
-
-## Features
-
--   rigorously define variables in a neat way
--   e.g., define "school closures" rigorously (e.g., a closure is identified as Tracker score of 2 or 3... what is a Tracker score?)
 
 # Results
 ```{r}
@@ -165,7 +169,6 @@ ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))
 ```
-
 
 
 ```{r}
@@ -242,6 +245,8 @@ grid.arrange(
 )
 
 ```
+
+
 
 ```{r}
 #| label: fig-testscoresbyonline
