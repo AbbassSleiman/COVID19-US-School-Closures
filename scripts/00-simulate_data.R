@@ -46,7 +46,7 @@ simulated_data2$white_students |> class() == "numeric"
 simulated_data2$black_students |> class() == "numeric"
 simulated_data2$broadband_usage |> class() == "numeric"
 
-## Check that first and third columns only have whole numbers ##
+## Check that the columns only have whole numbers ##
 #Based on: https://stackoverflow.com/q/3476782/23271634
 is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) abs(x - round(x)) < tol
 is.wholenumber(simulated_data2$white_students)
