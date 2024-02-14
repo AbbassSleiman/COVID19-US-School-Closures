@@ -1,7 +1,7 @@
 ---
 title: "Significant declines in standardised test scores due to COVID-19 school closures disproportionately affect vulnerable students: A replication analysis using data from the United States and a case study on the Netherlands"
 author: "Krishiv Jain, Julia Kim, Abbass Sleiman"
-thanks: "Code and data are available at: https://github.com/AbbassSleiman/COVID19-US-School-Closures; Replication on Social Science Reproduction platform available at: https://www.socialsciencereproduction.org/reproductions/1616/index?step=0"
+thanks: "Code and data are available at: [https://github.com/AbbassSleiman/COVID19-US-School-Closures](https://github.com/AbbassSleiman/COVID19-US-School-Closures); Replication on Social Science Reproduction platform available at: [https://www.socialsciencereproduction.org/reproductions/1616/index?step=0](https://www.socialsciencereproduction.org/reproductions/1616/index?step=0)"
 date: "February 15, 2024"
 date-format: long
 format: 
@@ -33,11 +33,12 @@ library(knitr)
 library(janitor)
 library(kableExtra)
 library(DiagrammeR)
+library(readxl)
+library(patchwork)
 
 # Read data
 cleaned_test_score_data <- read_csv(here("data/analysis_data/cleaned_test_score_data.csv"))
-cleaned_region_data <- read_csv(here("data/analysis_data/cleaned_region_data.csv"))
-
+cleaned_region_data <- read_csv(here("data/analysis_data/cleaned_region_data.csv")) 
 averaged_broadband <- read_csv(here("data/analysis_data/averaged_broadband.csv"))
 averaged_white_share <- read_csv(here("data/analysis_data/averaged_white_share.csv"))
 averaged_black_share <- read_csv(here("data/analysis_data/averaged_black_share.csv"))
@@ -61,7 +62,7 @@ Our paper seeks to assess the robustness and generalisability of Jack and Oster'
 
 (3) School closures contributed significantly to the decline in students' pass rates in mathematics and ELA in the 2020-2021 school year. Changes in ELA scores were smaller than mathematics scores, but significantly larger in districts with larger populations of students who are Black, Hispanic, English Language Learners (ELL) or eligible for free and reduced price lunch (FRPL).
 
-We also apply a Dutch-facing lens, examining the extent of school closures and the impact on student learning, in a country whose pandemic circumstances were regarded as most favourable for students [@engzell]. In spite of a short lockdown, equitable school funding and high degree of technological preparedness, we discuss how Dutch students still suffered a loss of the equivalent of one-fifth of a year of education and how the effects were distributed unequally according to student demographics. Throughout, our investigation is conducted using the open-source statistical programming language `R` [@R], with functionalities from `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `here` [@here], `kableExtra` [@kableExtra] and `DiagrammeR` [@DiagrammeR]. 
+We also apply a Dutch-facing lens, examining the extent of school closures and the impact on student learning, in a country whose pandemic circumstances were regarded as most favourable for students [@engzell]. In spite of a short lockdown, equitable school funding and high degree of technological preparedness, we discuss how Dutch students still suffered a loss of the equivalent of one-fifth of a year of education and how the effects were distributed unequally according to student demographics. Throughout, our investigation is conducted using the open-source statistical programming language `R` [@R], with functionalities from `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `here` [@here], `kableExtra` [@kableExtra], `DiagrammeR` [@DiagrammeR], `readxl` [@readxl] and `patchwork` [@patchwork]. 
 
 This paper is structured, as follows. In Section 2, we address the sources of the data sets in the original paper, the methodologies used to collect them, and highlight key features. In Section 3, we conduct a replication of the original study to confirm the robustness of its findings and to design scientific figures that permit a more effective data visualisation. In Section 4, we assess the relevance of these findings to the Netherlands. We compliment this discussion by addressing ethical implications and limitations of the original research, and by giving directions for future analysis.
 
@@ -101,6 +102,7 @@ The original file was a Stata file, however, to reduce the size, data on 2018 an
 
 This data set is available from Microsoft’s “United States Broadband Usage Percentages Dataset" Github Repository [@kahan2020usbroadband]. The data is for October 2020, and gives the broadband usage for each county in the United States, as well as the state that the county is a part of. 
 
+
 ## Methodology
 
 ### Datacleaning for Abbass' Figure 1
@@ -132,13 +134,6 @@ To calculate the information regarding broadband, we started with the `broadband
 #| label: tbl-daysclosed
 #| echo: false
 #| tbl-cap: "Top 5 countries by number of school closures from Jan 2020 - Dec 2021"
-library(tidyverse)
-library(janitor)
-library(dplyr)
-library(knitr)
-library(here)
-library(readxl)
-library(ggplot2)
 
 # Calculate the number of days schools were closed for each country
 days_closed_per_country <- cleaned_region_data |>
@@ -156,14 +151,6 @@ days_closed_per_country |>
 #| label: fig-broadband
 #| echo: false
 #| fig-cap: "BroadBand"
-library(tidyverse)
-library(janitor)
-library(dplyr)
-library(knitr)
-library(here)
-library(readxl)
-library(ggplot2)
-
 ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
   geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
   labs(x = "Quantile Label", y = "Average") +
@@ -181,14 +168,6 @@ ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
 #| label: fig-white
 #| echo: false
 #| fig-cap: "Share White"
-library(tidyverse)
-library(janitor)
-library(dplyr)
-library(knitr)
-library(here)
-library(readxl)
-library(ggplot2)
-
 ggplot(averaged_white_share, aes(x = QUANTILE_LABEL, y = average)) +
   geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
   labs(x = "Quantile Label", y = "Average") +
@@ -206,14 +185,6 @@ ggplot(averaged_white_share, aes(x = QUANTILE_LABEL, y = average)) +
 #| label: fig-black
 #| echo: false
 #| fig-cap: "Share Black"
-library(tidyverse)
-library(janitor)
-library(dplyr)
-library(knitr)
-library(here)
-library(readxl)
-library(ggplot2)
-
 ggplot(averaged_black_share, aes(x = QUANTILE_LABEL, y = average)) +
   geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
   labs(x = "Quantile Label", y = "Average") +
@@ -226,20 +197,10 @@ ggplot(averaged_black_share, aes(x = QUANTILE_LABEL, y = average)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-
-
 ```{r}
 #| label: fig-asian
 #| echo: false
 #| fig-cap: "Share Asian"
-library(tidyverse)
-library(janitor)
-library(dplyr)
-library(knitr)
-library(here)
-library(readxl)
-library(ggplot2)
-
 ggplot(averaged_asian_share, aes(x = QUANTILE_LABEL, y = average)) +
   geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
   labs(x = "Quantile Label", y = "Average") +
@@ -252,22 +213,10 @@ ggplot(averaged_asian_share, aes(x = QUANTILE_LABEL, y = average)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-
-
-
-
 ```{r}
 #| label: fig-hispanic
 #| echo: false
 #| fig-cap: "Share Hispanic"
-library(tidyverse)
-library(janitor)
-library(dplyr)
-library(knitr)
-library(here)
-library(readxl)
-library(ggplot2)
-
 ggplot(averaged_hispanic_share, aes(x = QUANTILE_LABEL, y = average)) +
   geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
   labs(x = "Quantile Label", y = "Average") +
@@ -280,25 +229,10 @@ ggplot(averaged_hispanic_share, aes(x = QUANTILE_LABEL, y = average)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-
-
-
-
-
-
-
 ```{r}
 #| label: fig-testscoresbyonline
 #| echo: false
 #| fig-cap: "Test score by percent online (change)"
-library(tidyverse)
-library(janitor)
-library(dplyr)
-library(knitr)
-library(here)
-library(readxl)
-library(ggplot2)
-
 # Calculate the total number of enrollments overall
 total_enrollment <- sum(cleaned_test_score_data$enrollment)
 
@@ -353,15 +287,6 @@ ggplot(summary_test_data, aes(x = weighted_avg_change_pass * 100, y = inperson_c
 #| echo: false
 #| message: false
 #| fig-cap: "Update"
-library(tidyverse)
-library(janitor)
-library(dplyr)
-library(knitr)
-library(here)
-library(readxl)
-library(ggplot2)
-library(patchwork)
-
 # Filter for Math
 filtered_test_data <- cleaned_test_score_data |>
   filter(subject == "Math")
@@ -465,15 +390,6 @@ ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100, y = quanti
 #| echo: false
 #| message: false
 #| fig-cap: "Update"
-library(tidyverse)
-library(janitor)
-library(dplyr)
-library(knitr)
-library(here)
-library(readxl)
-library(ggplot2)
-library(patchwork)
-
 # Filter for Math
 filtered_test_data <- cleaned_test_score_data |>
   filter(subject == "ELA")
@@ -571,11 +487,6 @@ ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100, y = quanti
   labs(color = "Year Category", shape = "Race") +
   theme_minimal()
 ```
-
-
-
-
-
 
 # Discussion
 
