@@ -79,7 +79,7 @@ The paper and raw data used for replication is obtained from “COVID-19, School
 
 (3) What is the short-term impact of school closures on student academic performance and learning inequalities?
 
-Whilst the work by Jack and Oster [-@Jack_Oster_2023] uses number of data files, we require only a subset of them. The specific files used to address each of the three major research questions, including their sources and method of data collection, is given below. 
+Whilst the work by Jack and Oster [@Jack_Oster_2023] uses number of data files, we require only a subset of them. The specific files used to address each of the three major research questions, including their sources and method of data collection, is given below. 
 
 ### Extent of School Closures in the United States and the World 
 
@@ -90,7 +90,7 @@ This dataset is obtained from the Oxford COVID-19 Policy Tracker, a project that
 
 `country_region.csv`
 
-This dataset was  by ourselves for the purpose of replicating "FIGURE 2" in `99-replications.R`. It includes the same countries found in `region_data.csv` as well as the region to which they correspond, as classified by the World Bank [@worldbank2023]. These regions are sub-Saharan Africa, Europe and Central Asia, East Asia and Pacific, Middle East and North Africa, Latin America and Caribbean, South Asia and North America. 
+This dataset was  manually created by ourselves for the purpose of replicating "FIGURE 2" in `99-replications.R`. It includes the same countries found in `region_data.csv` as well as the region to which they correspond, as classified by the World Bank [@worldbank2023]. These regions are sub-Saharan Africa, Europe and Central Asia, East Asia and Pacific, Middle East and North Africa, Latin America and Caribbean, South Asia, and North America. 
 
 
 ### Average Number of School Closures by Local Demographic Characteristics
@@ -118,19 +118,26 @@ This dataset is available from Microsoft’s “United States Broadband Usage Pe
 
 `scores_lm_demographics.csv`
 
-This dataset is obtained from the final dataset found in the data repository 
-
-Standardised assessments were cancelled in 2020 due to the pandemic. 
+This dataset is a csv version of `scores_lm_demographics.dta` obtained from the final dataset found in the data repository for “Pandemic	Schooling	Mode	and	Student	Test	Scores:	Evidence	from	US	School Districts” [@TestScore]. This dataset contains extensive information on various school districts across the aforementioned 11 states, including information on the shares of students by race, the share of schooling done in-person, and changes in average test scores in both Math and ELA from the previous year across the years 2018-2019 and 2021-2022 (no information is present regarding the year 2020 as all standardised assessments were cancelled due to the pandemic).
  
 
 ## Methodology
 ### Extent of School Closures in the United States and the World 
 
-In an attempt to garner a deeper understanding of how the US compares to the world with regards to their explore how the US compares to the rest of the world with regards to the number @tbl-daysclosed provides a snippet of the top to nations by 
+@fig-daysclosed depicts the average number of school closures by region, as defined by the World Bank, between the start of January 2020 and the end of December 2021. In particular, it employs data on 185 countries, each of which is assigned its particular region, and provides the average number of school closures for nations in each region between the aforementioned time frame.
 
-### Average Number of School Closures by Local Demographic Characteristics
+In order to achieve this, we first created the dataset `country_region.csv` which assigns each of the 185 countries present in the primary dataset, `region_data.csv`, its respective region. This was done since `region_data.csv` did not feature each nation's region, and as such, by creating the `country_region.csv` dataset we were able to 'merge' the two sets of information so that the final product featured all information regarding the Covid Tracker score of each country one each day, as well as the region the country is in.
 
-The purpose of Figures \ref{fig-broadband} and \ref{fig-white} is to explore the correlations between certain district and county characteristics, and the average number of virtual school days for the respective district or county. Specifically, we look at broandband usage by county, and the shares of four races (White, Black, Asian, Hispanic) by district. For each county or district, we assign "high" or "low" depending on if their level for the characteristics being explored is above or below their state's median, respectively. By doing so, we allow for the results to be driven by a variation within states, as opposed to variation across states.   
+We initially cleaned the data in `region_data.csv` by omitting information from the year 2022 in a bid to replicate and examine the internal validity of the work by Jack and Oster who also omitted the year 2022 from their figure [@Jack_Oster_2023]. From there, only the columns of interest were kept which detailed the country name, (empty) region name, date, and Covid Tracker score. We also found a minor spelling error of the Faroe Islands which were incorrectly spelled as Faeroe Islands which we also amended in the cleaning process. From here, we simply merged the cleaned `region_data.csv` with the regions listed in `country_region.csv` in order fill in the empty region names present in the original dataset.
+
+With the cleaned dataset, we were able to create the figure detailing the average days closed by region by first grouping the cleaned data by region name and country, then summing the number of instances where a Tracker score of 2 or 3 was present (as this defines a school closure as per Jack and Oster's work [@Jack_Oster_2023]). From there, we calculated the mean number of days closed by region by computing the average number of days closed for all nations in a given region.
+
+Then, in an attempt to garner a deeper understanding of how the US compares to other nations with regards to their COVID-19 schooling policies and measures, we employ @tbl-daysclosed which provides a snippet of the top 5 countries by number of school closures between the start of January 2020 and the end of December 2021. Due to the US featuring the second-highest number of school closures, @tbl-daysclosed specifically depicts the top 5 nations in an attempt to evidence the US’ large number of closures relative to the rest of the world. In order to generate this figure, we employed the same cleaned dataset 
+
+
+### Average Number of School Closures by Local Demographic Characteristics {#sec-datacleaning2}
+
+The purpose of Figures \ref{fig-broadband} and \ref{fig-race} is to explore the correlations between certain district and county characteristics, and the average number of virtual school days for the respective district or county. Specifically, we look at broandband usage by county, and the shares of four races (White, Black, Asian, Hispanic) by district. For each county or district, we assign "high" or "low" depending on if their level for the characteristics being explored is above or below their state's median, respectively. By doing so, we allow for the results to be driven by a variation within states, as opposed to variation across states.   
 
 We start by using `nces_district_enrollment_2018_2020.csv.zip`. As previously mentioned, this data set splits the total enrollment into various categories. We start by converting the columns into the numeric class as appropriate. Some enrollment cells did not have a value, indicating that data was not collected for that specific metric. These occurred a handful of times for certain races within certain districts. These NAs were replaced with 0s. For our paper, we are concerned specifically with race. Thus, for each district, we calculate the total number of White, Black, Asian, and Hispanic students enrolled. Given the structure of the data, this is done by summing the total enrollment per race for Male and Female for each district. Next the total enrollment for the whole district was calculated, before then calculating the share of total enrollment that each race comprises. 
 
@@ -154,6 +161,8 @@ Data from the Oxford COVID-19 Policy Tracker [@Hale] and World Bank [@worldbank2
 #| warning: false
 #| message: false
 #| fig-cap: "Average number of days of school closed, by region, between January 2020–December 2021."
+#| fig-pos: H
+
 # Calculate the number of days schools were closed for each country
 days_closed_per_country <- cleaned_region_data |>
   group_by(region_name, country_name) |>
@@ -190,6 +199,7 @@ In studying individual countries, Table \ref{tbl-daysclosed} shows that the Unit
 #| warning: false
 #| message: false
 #| tbl-cap: "Countries with Highest School Closures from Jan 2020-Dec 2021."
+#| tbl-pos: H
 
 # Calculate the number of days schools were closed for each country
 days_closed_per_country <- cleaned_region_data |>
@@ -203,16 +213,18 @@ days_closed_per_country |>
   kable(col.names = c("Country", "Days Closed"))
 ```
 
-Moreover, data from CSDH [@citeraw1], NCES [@citeraw2] and Microsoft [@kahan2020usbroadband] were used to show correlations between school closures and demographic characteristics, both across and within US states. We reconstruct and extend a portion of the data used for this analysis in Figures \ref{fig-broadband} and \ref{fig-white}. In particular, we enrich the analysis on the average days in virtual school by race, by adding shares of White and Asian students. This is done so that more insightful comparisons can be made across important ethnic classes. 
 
-Figure \ref{fig-broadband} shows correlations ... Altogether, school districts located in counties with lower broadband usage spent more of the 2020-2021 school year in virtual learning, consistent with the results obtained by Jack and Oster [-@Jack_Oster_2023]. 
+Moreover, data from CSDH [@citeraw1], NCES [@citeraw2] and Microsoft [@kahan2020usbroadband] were used to delve deeper and analyse correlations between the average number of virtual schools days, and certain demographic characteristics, and Figures \ref{fig-broadband} and \ref{fig-race} were created. As discussed previously, Figure \ref{fig-broadband} shows the average number of virtual days for counties that were classified as "Low" and those classified as "High," whilst Figure \ref{fig-race} shows the average for districts. The classification of districts and counties was explained in @sec-datacleaning2. 
+
+We built upon the research done by Jack and Oster [-@Jack_Oster_2023] in their paper by firstly utilising a different methodology. Jack and Oster had weighted their results by total district enrollment, thus, districts with larger enrollments will have a greater impact on the overall average than districts with smaller enrollments. In our paper, we do not weight it by enrollment, which allowed us to treat each district equally, regardless of its size. This offers a more balanced view of the educational landscape without overemphasising larger districts. We also enriched the analysis on the average virtual days by race by also considering the shares of White and Asian students, with the goal of better analysing the nuanced impact of racial demographics. Moreover, it is important to note that Jack and Oster did not mention their methodololgy for finding the virtual days for each county, given that data was only available for district. As previously mentioned, we found this metric by averaging across the districts found in each county. 
 
 ```{r}
 #| label: fig-broadband
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "Average days in virtual school by county broadband usage."
+#| fig-cap: "Average days in virtual school by county broadband usage"
+#| fig-pos: H
 ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
   geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
   labs(x = "Quantile Label", y = "Average") +
@@ -224,14 +236,15 @@ ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
   theme(plot.title = element_text(hjust = 0.5, size = 12))
 ```
 
-On the other hand, Figure \ref{fig-white} shows correlations [ADD DETAIL]. In particular, within state, school districts with higher shares of Black and Hispanic students spent more of the 2020-2021 year in virtual schooling than those with lower shares of Black and Hispanics. Precisely the opposite trend is observed for white students. No significant variation in the days spent in virtual schooling is observed for Asian students. [ADD MORE DETAIL]
+Figure \ref{fig-broadband} shows that the average number of virtual days for counties that were on the lower end of broadband usage for their respective states was 20 days, whilst the average number of virtual days for the "High" counties was 24 days. This result is quite different from the one obtained by Jack and Oster [-@Jack_Oster_2023], whereby they found that the average for "Low" counties was 55 days, and "High" counties was 48 days. Thus, not only are the number of days for the quantitles different, but our analysis found that the counties with lower broadband had less virtual days. The discrepancy in data can arise due to numerous reasons. Firstly, we did not weight the data by enrollment. Secondly, we neglected the cells without any data, whereas Jack and Oster may have dealt with these in a different manner. Lastly, their method of finding average virtual days for a county may be different. The observed differences in virtual learning days between counties with varying broadband usage levels highlight potential disparities in access to and the usage of online education resources. This suggests that regions with lower broadband usage may face additional challenges in facilitating effective virtual learning experiences for students.
 
 ```{r}
-#| label: fig-white
+#| label: fig-race
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "Average days in virtual school by district-level race shares."
+#| fig-cap: "Average days in virtual school by district-level race shares"
+#| fig-pos: H
 
 
 whiteplot <- ggplot(averaged_white_share, aes(x = QUANTILE_LABEL, y = average)) +
@@ -303,7 +316,11 @@ grid.arrange(
 
 ```
 
-Taken together, in-person education was inequitably distributed across demographic characteristics, with more disadvantaged districts spending more time in virtual schooling [@Jack_Oster_2023]. In particular, districts with less technological preparedness and higher shares of minorities -- especially Blacks and Hispanics -- were further disenfranchised by less access to in-person education. This pattern likely reinforced educational inequities between vulnerable and more privileged groups. 
+Figure \ref{fig-race} shows that the average number of virtual days for the districts classified as having a "High" share of black students spent 52 days in virtual schooling, and the "Low" districts spent 27 days. Jack and Oster [-@Jack_Oster_2023] found the number to be 56 days and 36 days respective. Our results for Hispanic students show that "High" districts had an average of 47 virtual days, and "Low" districts had an average of 30 virtual days. Jack and Oster found 53 days and 43 days respectively. Thus, our results are consistent with Jack and Oster in that we also observed that districts with a higher share of black students and a higher share of Hispanic students spent more days in virtual schooling. We find a larger discrepancy between "High" and "Low" district for both shares, primarily driven by the lower number of virtual days we calculated for the "Low" districts. 
+
+We extended Jack and Oster's research by also looking at the shares of White and Asian students. We found that districts with "High" shares of white students had an average of 55 days virtual, whilst the "Low" districts had 23 virtual days. For Asian students, we found "High" districts had an average of 40 days virtual, whilst "Low" districts had an average of 38 days virtual. This variation can be considered insignificant.
+
+Taken together, in-person education was inequitably distributed across demographic characteristics, with more disadvantaged districts spending more time in virtual schooling [@Jack_Oster_2023]. In particular, districts with less technological preparedness and higher shares of minorities  were further disenfranchised by less access to in-person education. This pattern likely reinforced educational inequities between vulnerable and more privileged groups. 
 
 Finally, data from ... was used to examine changes in district-level pass rate data from 11 state standardised assessments, taken in the spring of 2018, 2019 and 2021. We again reconstruct and extend the data...  
 
@@ -645,7 +662,7 @@ The analysis by Jack and Oster seeks to define the scope of COVID-19 school clos
 (2) Access to in-person education was unequal by demographic characteristics. More disadvantaged districts, *i.e.*, those with higher proportions of racial minorities and lower broadband usage spent more days in virtual schooling.
 (3) During the 2020-2021 school year, students' pass rates on standardised assessments declined by 12.8 percentage points in mathematics and 6.8 in ELA. Declines were more severe in more disadvantaged districts, *i.e.*, those with higher proportions of racial minorities, ELL and FRPL students.
 
-As noted by Jack and Oster [-@Jack_Oster_2023], it can be seen that the equity impacts are two-fold. First, schools (and students) with lower resources are less likely to have access to in-person instruction. Second, for such groups, the consequences of a lack of in-person instruction are more severe. This may be due to a smaller investment by such schools in effective remote learning programs or due to the challenges disadvantages students face at home, such as less reliable Internet connection or fewer community resources. Accordingly, while COVID-19 school closures imposed learning loss costs on students as a whole, they affected most negatively those who were already most vulnerable. This exacerbates the already large inequality gap. 
+As noted by Jack and Oster [-@Jack_Oster_2023], it can be seen that the equity impacts are two-fold. First, schools (and students) with lower resources are less likely to have access to in-person instruction. The significant differences in virtual schooling days across districts categorized by racial demographics underscore systemic inequalities in access to in-person education. Our findings reveal that districts with higher proportions of Black and Hispanic students spent substantially more time in virtual schooling compared to those with lower proportions. This highlights a  disparity wherein more disadvantaged districts, often populated by minority students, face prolonged periods of virtual learning, potentially exacerbating existing educational inequities. Second, for such groups, the consequences of a lack of in-person instruction are more severe. This may be due to a smaller investment by such schools in effective remote learning programs or due to the challenges disadvantages students face at home, such as less reliable Internet connection or fewer community resources. Accordingly, while COVID-19 school closures imposed learning loss costs on students as a whole, they affected most negatively those who were already most vulnerable. This exacerbates the already large inequality gap. 
 
 Having replicated their work, we now turn to examine its relevance to the Netherlands. We hope to gain insights into the extent of school closures in the Netherlands and its effect on student performance, with an especial focus on students from disadvantaged homes. 
 
