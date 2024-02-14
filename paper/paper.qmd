@@ -141,7 +141,8 @@ We drew on the `nces_district_enrollment_2018_2020.csv.zip` dataset, which repor
 
 Here, we differed from the methodology employed by Jack and Oster [-@Jack_Oster_2023] in one specific way. In their workflow, Jack and Oster [-@Jack_Oster_2023] also weighted the average number of days of virtual school by total district enrollment. In this way, districts with larger enrollments had greater impact on the overall average than those with smaller enrollments. In our analysis, we omitted such weighting, instead treating each district equally, regardless of size. This offered a more balanced view of the educational landscape, without overemphasising larger districts. 
 
-To address broadband usage, we drew on `broadband_data_2020October.csv` and `nces_district_directory_2018.dta`. With the former, we obtained the broadband usage across all US districts; with the latter, we regrouped all districts belonging to each US county and averaged their broadband usages. We then assigned to each county a quantile of "High" or "Low", according to whether their broadband usage was above or below their respective state's median. As before, we used `District_Overall_Shares.csv` to determine the average number of days in virtual schooling for all counties labelled as "High" and "Low." 
+Next, we drew on `broadband_data_2020October.csv` and `nces_district_directory_2018.dta` to determine correlations of days spent in virtual schooling with broadband usage.  With the former dataset, we obtained the broadband usage across all US districts; with the latter, we regrouped all districts belonging to each US county and averaged their broadband usages. We then assigned to each county a quantile of "High" or "Low", according to whether their broadband usage was above or below their respective state's median. Jack and Oster [-@Jack_Oster_2023] did not mention their methodology to find the number of virtual days for each county, given that data were available only at the district-level. To remedy this, we simply regrouped the districts in `District_Overall_Shares.csv` into their respective counties and averaged the number of virtual days across all districts for each county labelled as "High" and "Low." 
+
 
 ### Standardised Test Assessment Scores 
 
@@ -220,14 +221,14 @@ In studying individual countries, Table \ref{tbl-daysclosed} shows that the Unit
 
 ## Average Number of School Closures by Local Demographic Characteristics  
 
-Data from CSDH [@citeraw1], NCES [@citeraw2] and Microsoft [@kahan2020usbroadband] were used to determine correlations between the average number of virtual schools days, and certain demographic characteristics. We reconstruct these results in Figures \ref{fig-broadband} and  \ref{fig-race}. These show the average number of virtual days for counties or districts that have "High" or "Low" levels of broadband usage and various race shares, respectively. Note that we enriched Jack and Oster's [-@Jack_Oster_2023] analysis on race by also considering the shares of White and Asian students, so as to better understand the nuanced impact of racial demographics. Moreover, it is important to note that Jack and Oster did not mention their methodololgy for finding the virtual days for each county, given that data was only available for district. As previously mentioned, we found this metric by averaging across the districts found in each county. 
+Data from CSDH [@citeraw1], NCES [@citeraw2] and Microsoft [@kahan2020usbroadband] were used to determine correlations between the average number of virtual schools days, and certain demographic characteristics. We reconstruct these results in Figures \ref{fig-broadband} and  \ref{fig-race}. These show the average number of virtual days for counties or districts that have "High" or "Low" levels of broadband usage and various race shares, respectively. Note that we enriched Jack and Oster's [-@Jack_Oster_2023] analysis on race by also considering the shares of White and Asian students, so as to better understand the nuanced impact of racial demographics.
 
 ```{r}
 #| label: fig-broadband
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "Average days in virtual school by county broadband usage"
+#| fig-cap: "Average days in virtual school by county broadband usage."
 #| fig-pos: H
 ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
   geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
@@ -240,14 +241,16 @@ ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
   theme(plot.title = element_text(hjust = 0.5, size = 12))
 ```
 
-Figure \ref{fig-broadband} shows that the average number of virtual days for counties that were on the lower end of broadband usage for their respective states was 20 days, whilst the average number of virtual days for the "High" counties was 24 days. This result is quite different from the one obtained by Jack and Oster [-@Jack_Oster_2023], whereby they found that the average for "Low" counties was 55 days, and "High" counties was 48 days. Thus, not only are the number of days for the quantiles different, but our analysis found that the counties with lower broadband had less virtual days. The discrepancy in data can arise due to numerous reasons. Firstly, we did not weight the data by enrollment. Secondly, we neglected the cells without any data, whereas Jack and Oster may have dealt with these in a different manner. Lastly, their method of finding average virtual days for a county may be different. The observed differences in virtual learning days between counties with varying broadband usage levels highlight potential disparities in access to and the usage of online education resources. This suggests that regions with lower broadband usage may face additional challenges in facilitating effective virtual learning experiences for students.
+Figure \ref{fig-broadband} shows the average number of days with school closed in counties with "Low" and "High" broadband usage to be 20 and 24, respectively. Note this result significantly differs to the one obtained by Jack and Oster [-@Jack_Oster_2023], who determined the average for "Low" and "High" counties to be 55 and 48 days, respectively. Moreover, our numbers point to an opposite trend-- that counties with lower broadband usage had fewer virtual days. The discrepancy in data can arise due to a number of important reasons. First, we did not weight the data by enrollment. Second, whilst we chose to neglect all cells with missing data, Jack and Oster [-@Jack_Oster_2023] may have approached this problem in a different manner, which they did not document. Lastly, our methods to find the average number of virtual days for a county may differ to theirs. As noted previously, we regrouped districts into counties, averaging across the number of virtual days for districts into counties, whereas Jack and Oster [-@Jack_Oster_2023] left no note to document their own approach. 
+
+Our conclusions still point to the fact that potential disparities in access to and the usage of online education resources exist. The observed differences in virtual learning days with the level of broadband usage suggests that regions with less technological preparedness may face additional challenges in accessing effective virtual learning experiences. 
 
 ```{r}
 #| label: fig-race
 #| echo: false
 #| warning: false
 #| message: false
-#| fig-cap: "Average days in virtual school by district-level race shares"
+#| fig-cap: "Average days in virtual school by district-level race shares."
 #| fig-pos: H
 
 
@@ -320,11 +323,11 @@ grid.arrange(
 
 ```
 
-Figure \ref{fig-race} shows that the average number of virtual days for the districts classified as having a "High" share of black students spent 52 days in virtual schooling, and the "Low" districts spent 27 days. Jack and Oster [-@Jack_Oster_2023] found the number to be 56 days and 36 days respective. Our results for Hispanic students show that "High" districts had an average of 47 virtual days, and "Low" districts had an average of 30 virtual days. Jack and Oster found 53 days and 43 days respectively. Thus, our results are consistent with Jack and Oster in that we also observed that districts with a higher share of black students and a higher share of Hispanic students spent more days in virtual schooling. We find a larger discrepancy between "High" and "Low" district for both shares, primarily driven by the lower number of virtual days we calculated for the "Low" districts. 
+Figure \ref{fig-race} shows how the average number of days with school closed in districts vary "Low" and "High" shares of Black, Hispanic, Asian and White students. For Black students, these numbers were 52 and 27, respectively, differing slightly to those from Jack and Oster [-@Jack_Oster_2023] who determined 56 and 36 days, respectively. For Hispanic students, we found an average of 47 and 30 days, respectively, again differing to those from the original paper, which reported 53 and 43 days, respectively. In spite of the numerical differences, our results point to conclusions consistent with those from Jack and Oster [-@Jack_Oster_2023], who also observed districts with higher shares of Black and Hispanic students to spend more of the 2020-2021 school year in virtual schooling. 
 
-We extended Jack and Oster's research by also looking at the shares of White and Asian students. We found that districts with "High" shares of white students had an average of 55 days virtual, whilst the "Low" districts had 23 virtual days. For Asian students, we found "High" districts had an average of 40 days virtual, whilst "Low" districts had an average of 38 days virtual. This variation can be considered insignificant.
+We extended Jack and Oster's research by also looking at the shares of White and Asian students. We found that districts with "High" and "Low" shares of White students had an average of 55 and 23 days in virtual schooling, respectively. Likewise, we found that districts with "High" and "Low" shares of Asian students had average of 40 and 38 days in virtual schooling, respectively. These results point to the following: White students appear to be further enfranchised by having greater access to in-person learning, in contrast to historically and currently disadvantaged Black and Hispanic students. No such conclusions can be drawn for Asian students, for whom the variation in the number of virtual days between "High" and "Low" districts is too small to be considered. 
 
-Taken together, in-person education was inequitably distributed across demographic characteristics, with more disadvantaged districts spending more time in virtual schooling [@Jack_Oster_2023]. In particular, districts with less technological preparedness and higher shares of minorities  were further disenfranchised by less access to in-person education. This pattern likely reinforced educational inequities between vulnerable and more privileged groups. 
+Taken together, in-person education was inequitably distributed across demographic characteristics, with racially disadvantaged districts spending more time in virtual schooling [@Jack_Oster_2023]. By contrast, districts with less technological preparedness spent less time in virtual schooling, which may arise as a consequence of a lack of ability to provide quality on-line learning resources. For these differing reasons, both groups can be said to have been further disenfranchised by the pandemic. This pattern likely reinforced educational inequities between vulnerable and more privileged groups. 
 
 ## Standardised Test Assessment Scores
 
