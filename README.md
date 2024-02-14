@@ -18,6 +18,8 @@ The repo is structured as follows:
 -   `outputs/paper` contains the files used to generate the paper, including the Quarto document and reference bibliography file, as well as the PDF of the paper. 
 -   `scripts` contains the R scripts used to simulate (`00-simulate_data.R`), download (`01-download_data.R`), clean (`02-data_cleaning.R`) and test data (`03-test_data.R`), as well as to replicate the important figures from the original paper (`99-replications.R`)
 
+- Note: The `nces_district_enrollment_2018_2020.dta` is not included in `input/data` given its size. This data can be downloaded from Jack and Oster's "COVID-19, School Closures, and Outcomes" paper's replication package, found in the folder `Raw` (https://www.aeaweb.org/articles?id=10.1257/jep.37.4.51). In order to reproduce our code, download the data, and then change line 85 in (`02-data_cleaning.R`) to the appropriate file path of the file. 
+
 ## LLM Usage  
 
 No auto-complete tools such as co-pilot were used in the course of this project. However, CHATGPT-3.5 was used to aid in the writing of this paper. In particular, it was primarily used to aid with the coding aspect of the paper as opposed to the actual writing. The entire chat history can be found in `inputs/llm/usage.txt`. 
