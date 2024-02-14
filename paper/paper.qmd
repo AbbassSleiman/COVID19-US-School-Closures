@@ -35,6 +35,7 @@ library(kableExtra)
 library(DiagrammeR)
 library(readxl)
 library(patchwork)
+library(gridExtra)
 
 # Read data
 cleaned_test_score_data <- read_csv(here("data/analysis_data/cleaned_test_score_data.csv"))
@@ -166,69 +167,80 @@ ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
 ```
 
 
+
 ```{r}
 #| label: fig-white
 #| echo: false
-#| fig-cap: "Share White"
-ggplot(averaged_white_share, aes(x = QUANTILE_LABEL, y = average)) +
+#| fig-cap: "Average Virtual School Days by Share of Race"
+
+
+whiteplot <- ggplot(averaged_white_share, aes(x = QUANTILE_LABEL, y = average)) +
   geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
-  labs(x = "Quantile Label", y = "Average") +
-  ggtitle("Average Days Virtual by Quantile") +
+  labs(x = "Quantile", y = "Average Days Virtual") +
+  ggtitle("White Share") +
+  geom_text(aes(label = sprintf("%.0f", average)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, size = 3) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 10),
+                axis.title.x = element_text(size = 9),
+                axis.title.y = element_text(size = 9),
+        axis.text.y = element_text(size = 7.5)) +
+  ylim(0, 60)
+
+
+blackplot <- ggplot(averaged_black_share, aes(x = QUANTILE_LABEL, y = average)) +
+  geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
+  labs(x = "Quantile", y = "Average Days Virtual") +
+  ggtitle("Black Share") +
+  geom_text(aes(label = sprintf("%.0f", average)), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5, size = 3) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, size = 10),
+                axis.title.x = element_text(size = 9),
+                axis.title.y = element_text(size = 9),
+        axis.text.y = element_text(size = 7.5)) +
+  ylim(0, 60)
+
+
+asianplot <- ggplot(averaged_asian_share, aes(x = QUANTILE_LABEL, y = average)) +
+  geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
+  labs(x = "Quantile", y = "Average Days Virtual") +
+  ggtitle("Asian Share") +
   geom_text(aes(label = sprintf("%.0f", average)), 
             position = position_dodge(width = 0.9), 
             vjust = -0.5, size = 3) +
   labs(x = "Quantile", y = "Average Days Virtual") +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
-```
+  theme(plot.title = element_text(hjust = 0.5, size = 10),
+                axis.title.x = element_text(size = 9),
+                axis.title.y = element_text(size = 9),
+        axis.text.y = element_text(size = 7.5)) +
+  ylim(0, 60)
 
-
-```{r}
-#| label: fig-black
-#| echo: false
-#| fig-cap: "Share Black"
-ggplot(averaged_black_share, aes(x = QUANTILE_LABEL, y = average)) +
+hispanicplot <- ggplot(averaged_hispanic_share, aes(x = QUANTILE_LABEL, y = average)) +
   geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
-  labs(x = "Quantile Label", y = "Average") +
-  ggtitle("Average Days Virtual by Quantile") +
+  labs(x = "Quantile", y = "Average Days Virtual") +
+    ggtitle("Hispanic Share") +
   geom_text(aes(label = sprintf("%.0f", average)), 
             position = position_dodge(width = 0.9), 
             vjust = -0.5, size = 3) +
   labs(x = "Quantile", y = "Average Days Virtual") +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
-```
+  theme(plot.title = element_text(hjust = 0.5, size = 10),
+                axis.title.x = element_text(size = 9),
+                axis.title.y = element_text(size = 9),
+        axis.text.y = element_text(size = 7.5)) +
+  ylim(0, 60)
 
-```{r}
-#| label: fig-asian
-#| echo: false
-#| fig-cap: "Share Asian"
-ggplot(averaged_asian_share, aes(x = QUANTILE_LABEL, y = average)) +
-  geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
-  labs(x = "Quantile Label", y = "Average") +
-  ggtitle("Average Days Virtual by Quantile") +
-  geom_text(aes(label = sprintf("%.0f", average)), 
-            position = position_dodge(width = 0.9), 
-            vjust = -0.5, size = 3) +
-  labs(x = "Quantile", y = "Average Days Virtual") +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
-```
 
-```{r}
-#| label: fig-hispanic
-#| echo: false
-#| fig-cap: "Share Hispanic"
-ggplot(averaged_hispanic_share, aes(x = QUANTILE_LABEL, y = average)) +
-  geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
-  labs(x = "Quantile Label", y = "Average") +
-  ggtitle("Average Days Virtual by Quantile") +
-  geom_text(aes(label = sprintf("%.0f", average)), 
-            position = position_dodge(width = 0.9), 
-            vjust = -0.5, size = 3) +
-  labs(x = "Quantile", y = "Average Days Virtual") +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
+grid.arrange(
+  whiteplot, blackplot, asianplot, hispanicplot,
+  nrow = 2, 
+  heights = c(1, 1)
+)
+
 ```
 
 ```{r}
