@@ -147,13 +147,13 @@ Next, we drew on `broadband_data_2020October.csv` and `nces_district_directory_2
 
 ### Standardised Test Assessment Scores 
 
-@fig-mathscoresbyonline and @fig-elascoresbyonline explore the relationship between the share of in-person learning and change in test scores in standardised tests in Mathematics and ELA respectively. In particular, they examine changes in test scores across 3 years (2021, 2019, and 2018) from the year prior (excepting the case of 2021, where changes are relative to 2019). 
+@fig-mathscoresbyonline and @fig-elascoresbyonline explore the relationship between the share of in-person learning and change in pass rates in standardised tests in Mathematics and ELA respectively. In particular, they examine changes in test pass rates across 3 years (2021, 2019, and 2018) from the year prior (excepting the case of 2021, where changes are relative to 2019). 
 
-To achieve this, we made use of the `scores_lm_demographics.dta` dataset. However, we first converted the dataset into a `.csv` file, `scores_lm_demographics.csv`, to be used in the cleaning and analysis processes. From there, we cleaned the data by only selecting the columns of interest, those being the share of in-person learning, the subject of the test, the changes across each of the three years of interest, the number of students enrolled in each school district, and the shares of each of the three races of interest (White, Black, Asian and Hispanic). To generate the aforementioned figures, we first calculated the total number of students enrolled across all school districts. We then filtered by subject, so as to deal with one subject at a time when creating the two figures. We proceeded by defining four in-person categories of 0-25%, 25-50%, 50-75%, and 75-100%, after which we mutated our filtered data by assigning each school district one of the four categories. We then proceeded to group the data by year (one of the three previously mentioned), and by in-person category so that we were able to calculated the weighted average change in test scores for each in-person category in each year. Finally, we ungrouped the data to calculate the overall, and thus un-weighted, average change in test scores for each of the three years. This was repeated for both Mathematics and ELA test scores by simply changing the filtering of the data to only include one of the two.
+To achieve this, we made use of the `scores_lm_demographics.dta` dataset. However, we first converted the dataset into a `.csv` file, `scores_lm_demographics.csv`, to be used in the cleaning and analysis processes. From there, we cleaned the data by only selecting the columns of interest, those being the share of in-person learning, the subject of the test, the changes across each of the three years of interest, the number of students enrolled in each school district, the state each schooling district is in, and the shares of each of the three races of interest (White, Black, Asian and Hispanic). To generate the aforementioned figures, we first calculated the total number of students enrolled across all school districts. We then filtered by subject, so as to deal with one subject at a time when creating the two figures. We proceeded by defining four in-person categories of 0-25%, 25-50%, 50-75%, and 75-100%, after which we mutated our filtered data by assigning each school district one of the four categories. We then proceeded to group the data by year (one of the three previously mentioned), and by in-person category so that we were able to calculated the weighted average change in test pass rates for each in-person category in each year. Finally, we ungrouped the data to calculate the overall, and thus un-weighted, average change in test pass rates for each of the three years. This was repeated for both Mathematics and ELA test pass rates by simply changing the filtering of the data to only include one of the two.
 
-@fig-mathscoresrace, @fig-elascoresrace examine these test score changes from a different lens. Instead of considering the share of in-person learning, it explores the possibility of a systematic difference in the changes in test scores based on the relative share of various races. In particular, the figures examine the correlation between changes in test scores and the relative quantile share of White, Black, and Hispanic students which is one of "Low", "Middle" or "High". As before, this is also done for each of the three years of interest for each of the three races.
+@fig-mathscoresrace, @fig-elascoresrace examine these test pass rate changes from a different lens. Instead of considering the share of in-person learning, it explores the possibility of a systematic difference in the changes in test pass rates based on the relative share of various races. In particular, the figures examine the correlation between changes in test pass rates and the relative quantile share of White, Black, and Hispanic students which is one of "Low" or "High". As before, this is also done for each of the three years of interest for each of the three races.
 
-To generate this graph, we once again employed the cleaned `scores_lm_demographics.csv` file as was used to generate @fig-mathscoresbyonline and @fig-elascoresbyonline. We first filtered by subject to only consider one at a time, after which the total enrollment across all school districts was calculated as well as the three quantiles, "Low", "Middle", and "High", for each of the three races. From there, we grouped the data by year and quantile for each of the three races, then calculated the weighted average change in test scores for each subject and quantile, across all races and years. From there, we simply combined the summary statistics for each of the races and their respective quantiles, and showcased them in the figures, differentiating by race through shape, and year through color.
+To generate this graph, we once again employed the cleaned `scores_lm_demographics.csv` file as was used to generate @fig-mathscoresbyonline and @fig-elascoresbyonline. We first filtered by subject to only consider one at a time, after which the total enrollment across all school districts was calculated as well as the two quantiles, "Low" and "High", for each of the three races relative to the average shares in each of the 11 states. From there, we grouped the data by year and quantile for each of the three races, then calculated the weighted average change in test pass rates for each subject and quantile, across all races and years. From there, we simply combined the summary statistics for each of the races and their respective quantiles, and showcased them in the figures, differentiating by race through color, and year through shape.
 
 
 # Results
@@ -337,7 +337,7 @@ Taken together, in-person education was inequitably distributed across demograph
 #| echo: false
 #| message: false
 #| warning: false 
-#| fig-cap: "Test score by percent online (change)"
+#| fig-cap: "Enrollment-weighted average change in pass rates in Math standardised tests by the percent of in-person learning."
 #| fig-pos: H
 
 # Calculate the total number of enrollments overall
@@ -393,11 +393,11 @@ ggplot(summary_test_data, aes(x = weighted_avg_change_pass * 100, y = inperson_c
 #| echo: false
 #| message: false
 #| warning: false 
-#| fig-cap: "Test score by percent online (change)"
+#| fig-cap: "Enrollment-weighted average change in pass rates in ELA standardised tests by the percent of in-person learning."
 # Calculate the total number of enrollments overall
 total_enrollment <- sum(cleaned_test_score_data$enrollment)
 
-# Filter for Math
+# Filter for ELA
 filtered_test_data <- cleaned_test_score_data |>
   filter(subject == "ELA")
 
@@ -443,67 +443,59 @@ ggplot(summary_test_data, aes(x = weighted_avg_change_pass * 100,
   theme_minimal()
 ```
 
-Finally, data from “Pandemic	Schooling	Mode	and	Student	Test	Scores:	Evidence	from	US	School Districts” [@TestScore] was used to examine changes in district-level pass rate data from 11 state standardised assessments, taken in the spring of 2018, 2019 and 2021.   
+Finally, data from “Pandemic	Schooling	Mode	and	Student	Test	Scores:	Evidence	from	US	School Districts” [@TestScore] was used to examine changes in district-level pass rate data from 11 state standardised assessments, taken in the spring of 2018, 2019 and 2021. Both @fig-mathscoresbyonline and @fig-elascoresbyonline both provide information on the change in pass rates in Math and ELA standardised tests from the previous year, respectively, taking into account the share of in-person learning done by various school districts and across the three years of interest, each indicated by its respective color. Consistent with Jack and Oster [-@Jack_Oster_2023], our analysis shows a significant decline in pass rates from the 2018-2019 to the 2020-2021 school year. We see that in Spring 2021, there is a clear fall in the pass rates overall in both subject areas from 2019 (note that there were no standardised assessmments in 2020), though this fall is much more pronounced in Math than ELA (-12.8 percentage points compared to the -6.8 percentage points, respectively). The discrepancy between these two subjects is consistent with much of the current economic literature, which shows mathematics scores to be more sensitive to schooling differences [@betts2011effect; @angrist].
 
-
-[ADD DETAIL]. 
-
-Panels A and B show the scores in mathematics and in ELA, respectively. [EXPLAIN FIGURE & SYMBOLS]
-
-Consistent with Jack and Oster [-@Jack_Oster_2023], our analysis shows a significant decline in pass rates from the 2018-2019 to the 2020-2021 school year. In particular, pass rates in mathematics and ELA declined by 12.8 and 6.8 percentage points, respectively. The discrepancy between these two subjects is consistent with much of the current economic literature, which shows mathematics scores to be more sensitive to schooling differences [@betts2011effect; @angrist]. 
-
-... Thus, we find that in-person learning has significantly higher benefits for districts with larger shares of Black and Hispanic students. 
-
+We also see evidence that a lack of in-person learning has a detrimental effect on student's learning, as seen by the positive correlation between the share of in-person learning and the average change in pass rates in both Math and ELA in Spring 2021. One can note the lack of significant change and correlations between in-person learning and changes in pass rates for both subjects in Spring 2019 and Spring 2018, possibly due to schooling districts with lower shares of in-person learning being better equipped for this learning style given that this was prior to the pandemic, meaning schools were less likely to have been forced to switch to online or hybrid schooling, and instead were able to do so on their own accord.
 
 ```{r}
 #| label: fig-mathscoresrace
 #| echo: false
 #| message: false
-#| fig-cap: "Update"
+#| fig-cap: "Enrollment-weighted average change in pass rates in Math standardised test scores by the quantile share of White, Black, and Hispanic students"
 # Filter for Math
 filtered_test_data <- cleaned_test_score_data |>
   filter(subject == "Math")
 
 # White Share
 white_share <- filtered_test_data |>
-  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_white, enrollment)
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_white, enrollment, state)
 
 # Black Share
 black_share <- filtered_test_data |>
-  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_black, enrollment)
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_black, enrollment, state)
 
 # Hispanic Share
 hispanic_share <- filtered_test_data |>
-  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_hispanic, enrollment)
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_hispanic, enrollment, state)
 
 # Calculate the total number of enrollments overall
 total_enrollment <- sum(white_share$enrollment)
 
 # Define quantiles for white share
 white_share <- white_share |>
-  mutate(quantile = ntile(share_enroll_white, 3)) |>
+  group_by(state) |>
+  mutate(quantile = ntile(share_enroll_white, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
-    quantile == 2 ~ "Middle",
-    quantile == 3 ~ "High"
+    quantile == 2 ~ "High"
   ))
 
 # Define quantiles for black share
 black_share <- black_share |>
-  mutate(quantile = ntile(share_enroll_black, 3)) |>
+  group_by(state) |>
+  mutate(quantile = ntile(share_enroll_black, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
-    quantile == 2 ~ "Middle",
-    quantile == 3 ~ "High"
+    quantile == 2 ~ "High"
   ))
 
 # Define quantiles for hispanic share
 hispanic_share <- hispanic_share |>
-  mutate(quantile = ntile(share_enroll_hispanic, 3)) |>
+  group_by(state) |>
+  mutate(quantile = ntile(share_enroll_hispanic, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
-    quantile == 2 ~ "Middle",
-    quantile == 3 ~ "High"
+    quantile == 2 ~ "High"
   ))
 
 # Group by year and quantile and calculate summary statistics for white share
@@ -551,7 +543,7 @@ ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100,
   geom_point(size = 2.85, position = position_jitter(height = 0.1)) + 
   geom_vline(xintercept = 0, color = "darkgrey") +
   scale_x_continuous(limits = c(-17, 3)) +
-  scale_y_discrete(limits = c("Low", "Middle", "High")) +
+  scale_y_discrete(limits = c("Low", "High")) +
   labs(x = "Average Change in Pass Rate (Percentage Points)", y = "Quantile Level",
        title = "Average Change in Pass Rate by Race and Quantile") +
   scale_color_discrete(labels = c("Black", "Hispanic", "White")) +
@@ -564,51 +556,51 @@ ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100,
 #| label: fig-elascoresrace
 #| echo: false
 #| message: false
-#| fig-cap: "Update"
-# Filter for Math
+#| fig-cap: "Enrollment-weighted average change in pass rates in ELA standardised test scores by the quantile share of White, Black, and Hispanic students"
+# Filter for ELA
 filtered_test_data <- cleaned_test_score_data |>
   filter(subject == "ELA")
 
 # White Share
 white_share <- filtered_test_data |>
-  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_white, enrollment)
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_white, enrollment, state)
 
 # Black Share
 black_share <- filtered_test_data |>
-  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_black, enrollment)
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_black, enrollment, state)
 
 # Hispanic Share
 hispanic_share <- filtered_test_data |>
-  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_hispanic, enrollment)
+  select(change_2019_2021, change_2018_2019, change_2017_2018, share_enroll_hispanic, enrollment, state)
 
 # Calculate the total number of enrollments overall
 total_enrollment <- sum(white_share$enrollment)
 
 # Define quantiles for white share
 white_share <- white_share |>
-  mutate(quantile = ntile(share_enroll_white, 3)) |>
+  group_by(state) |>
+  mutate(quantile = ntile(share_enroll_white, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
-    quantile == 2 ~ "Middle",
-    quantile == 3 ~ "High"
+    quantile == 2 ~ "High"
   ))
 
 # Define quantiles for black share
 black_share <- black_share |>
-  mutate(quantile = ntile(share_enroll_black, 3)) |>
+  group_by(state) |>
+  mutate(quantile = ntile(share_enroll_black, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
-    quantile == 2 ~ "Middle",
-    quantile == 3 ~ "High"
+    quantile == 2 ~ "High"
   ))
 
 # Define quantiles for hispanic share
 hispanic_share <- hispanic_share |>
-  mutate(quantile = ntile(share_enroll_hispanic, 3)) |>
+  group_by(state) |>
+  mutate(quantile = ntile(share_enroll_hispanic, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
-    quantile == 2 ~ "Middle",
-    quantile == 3 ~ "High"
+    quantile == 2 ~ "High"
   ))
 
 # Group by year and quantile and calculate summary statistics for white share
@@ -656,7 +648,7 @@ ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100,
   geom_point(size = 2.85, position = position_jitter(height = 0.1)) + 
   geom_vline(xintercept = 0, color = "darkgrey") +
   scale_x_continuous(limits = c(-17, 3)) +
-  scale_y_discrete(limits = c("Low", "Middle", "High")) +
+  scale_y_discrete(limits = c("Low", "High")) +
   labs(x = "Average Change in Pass Rate (Percentage Points)", y = "Quantile Level",
        title = "Average Change in Pass Rate by Race and Quantile") +
   scale_color_discrete(labels = c("Black", "Hispanic", "White")) +
@@ -664,6 +656,11 @@ ggplot(combined_summary_data, aes(x = weighted_avg_change_pass * 100,
   labs(shape = "Year Category", color = "Race") +
   theme_minimal()
 ```
+
+In line with some of our previous discussions, we looked towards building upoing Jack and Oster's work by examining the potential systematic disparities between relative student racial compositions and the average percentage point change in test pass rates. In particular, both @fig-mathscoresrace and @fig-elascoresrace provide information on the changes in test pass rates across the three years of interest from the year prior as a function of the race quantiles that each schooling district belonged to for each of the share of White, Black, and Hispanic students. By grouping the test score data by state then calculating the average share of each of the three races mentioned, we were able to assign each schooling district a value of "High" or "Low" for each of the three races, detailing whether the particular schooling district had a share of students of a particular race greater than, or lower than, the median share across the 11 states, respectively. The figures distinguish between the year and race in question by shape and color, respectively. 
+
+By examining both figures, we find evidence that schooling districts with a relatively higher portion of either Black or Hispanic students featured greater drops in test pass rates on average, in both subjects, relative to schooling districts with lower portions of Black or Hispanic students in Spring 2021. Since we have established in the previous Results section that schooling districts with relatively higher shares of Black or Hispanic students typically had a higher number of virtual days than schooling districts with relatively lower shares, we effectively find evidence that in-person learning has greater benefits for districts with larger shares of Black and Hispanic students.
+
 
 # Discussion
 
