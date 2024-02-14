@@ -17,7 +17,7 @@ format:
     number-sections: true
 output: 
   bookdown::pdf_document2
-toc: false
+toc: true
 fig_caption: yes
 nocite: '@*'
 bibliography: references.bib
@@ -70,31 +70,33 @@ This paper is structured, as follows. In Section 2, we address the sources of th
 
 ## Source
 
-For this paper, the raw data from the “COVID-19, School Closures, and Outcomes” paper were used [-@Jack_Oster_2023], published in the American Economic Association's *Journal of Economic Perspectives* [@citeAEA]. To investigate the degree of school closures in the United States, and their attendant effects on children, they pose the following three questions:
+The paper and raw data used for replication is obtained from “COVID-19, School Closures, and Outcomes” [@Jack_Oster_2023], published in the American Economic Association's *Journal of Economic Perspectives* [@citeAEA]. To investigate the degree of school closures in the United States, and their attendant effects on children, they pose the following three questions:
 
-(1) Relative to the global picture, what is the extent of school closures in the United States?
+(1) Relative to the global picture, what was the extent of school closures in the United States in 2020-2021?
 
-(2) What are the demographic patterns underlying these closures? Namely, how are the number of days of school closed correlated with ethnicity, unemployment rate and political leanings at the district- or county-level?
+(2) What are the demographic patterns underlying these closures? Namely, how are the number of days of school closed correlated with ethnicity and broadband usage at the district- or county-level?
 
 (3) What is the short-term impact of school closures on student academic performance and learning inequalities?
 
-Whilst the Jack and Oster’s paper uses a range of data files, we only use some of these files. The specific files that were used, including their sources and a description of how the data is collected is given below.
+Whilst the work by Jack and Oster [-@Jack_Oster_2023] uses number of data files, we require only a subset of them. The specific files used to address each of the three major research questions, including their sources and method of data collection, is given below. 
 
-### Abbass' data sets
+### Extent of School Closures in the United States and the World 
 
-### Average Virtual Days By Local Characteristics
+
+### Average Number of School Closures by Local Demographic Characteristics
 
 `District_Overall_Shares.csv`
 
-This data set is available from the COVID-19 School Data Hub [@citeraw1], and provides information on the percentage of the school year that was spent in person, hybrid, or virtual. The data is given for each district, and includes the district’s NCESDistrictID and the state they are a part of.
+This dataset is obtained from the COVID-19 School Data Hub (CSDH), a database created by Jack and Oster to understand how the COVID-19 pandemic shaped American students' modes of learning in 2020-2021 [@citeraw1]. 
+For each district in the United States, it provides information on the percentage of the school year spent in each type of schooling mode -- in-person, hybrid and virtual -- and the state of which they are a part. To collect such data, the CDSH team submitted data requests to state education agencies, asking for their record of learning models used by schools and districts in 2020-2021 [@citeraw1]. They requested the data to be given at the school or district level and at the most frequent reporting interval available. 
 
 `nces_district_directory_2018.dta`
 
-This data set is available from the National Center of Education Statistics [@citeraw2]. This data set provides a variety of metrics for each district, including the state and county they are a part of, as well as their NCES district ID. 
+This dataset is obtained from the National Center of Education Statistics [@citeraw2]. For each district, it provides information as to the county and state to which they belong, and their NCES district ID. 
 
 `nces_district_enrollment_2018_2020.csv.zip`
 
-This data set is available from the National Center of Education Statistics [@citeraw2]. This data set provides a variety of metrics. For each district, the total number of students enrollment is reported and is split by the grade (ranging from Kindergarten to Grade 12), by the sex (Male and Female), and by the race (American Indian or Alaska Native, Asian, Black, Hispanic, Native Hawaiian or other Pacific Islander, or Two or more races). This information is reported for the years 2018, 2019, and 2020, and also includes the district's NCES district ID and the state that they are a part of. 
+This dataset is obtained from the National Center of Education Statistics [@citeraw2]. For each district and for each of the years 2018, 2019 and 2020, it reports the total student enrollment, split by grade (ranging from Kindergarten to Grade 12), sex (Male and Female), and ethnic class (American Indian or Alaska Native, Asian, Black, Hispanic, Native Hawaiian or other Pacific Islander, or Two or more races). The data is collected via surveys and supplied by state agencies to NCES [@USDeptCommerce]. 
 
 The original file was a Stata file, however, to reduce the size, data on 2018 and 2019 was first removed, since they were not required for our paper, before then converting the file to a csv file, and then compressing it into a zip file. This file was then processed within R. 
 
