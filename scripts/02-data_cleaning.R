@@ -52,6 +52,7 @@ cleaned_region_data <- country_region_data[cleaned_region_data, on = "country_na
 
 cleaned_region_data <- as.data.frame(cleaned_region_data)
 
+
 #### FIGURE 2 DATA CLEANING - AVERAGE VIRTUAL DAYS BY CHARACTERISTIC ####
 
 # CLEANING BROADBAND RAW DATA #
@@ -81,17 +82,17 @@ broadband_data <- broadband_data |>
 
 ## Read in the raw data ##
 
-zip_file <- "/Users/krishiv/Documents/New Folder STA302/nces_district_enrollment_2018_2020.csv.zip"
-# Unzip the file
-data <- unzip(zip_file)
-race_data <- read_csv(data[1], col_types = cols())
+race_data <- read_dta(
+  file = "/Users/krishiv/Documents/New Folder STA302/Raw/nces_district_enrollment_2018_2020.dta")
 
-#Only keeping data on total for each race
+#Only keeping data for the year 2020, and for total for each race
 race_data$grade <- as_factor(race_data$grade)
 race_data$race <- as_factor(race_data$race)
-## The number 99 represents the value for Total
-race_data <- race_data[race_data$grade == "99", ] 
-race_data <- race_data[!race_data$race == "99", ]
+race_data$year <- as_factor(race_data$year)
+
+race_data <- subset(race_data, year == "2020")
+race_data <- subset(race_data, grade == "Total")
+race_data <- subset(race_data, race != "Total")
 race_data$leaid <- as.numeric(race_data$leaid)
 
 race_data <- race_data |>
@@ -116,7 +117,7 @@ combined_data <- combined_data |>
 
 
 # White Share #
-white_share <- combined_data[combined_data$race == "1", ]
+white_share <- combined_data[combined_data$race == "White", ]
 
 ## Creating Quantiles 
 white_share <- white_share |>
@@ -128,7 +129,7 @@ white_share <- white_share |>
 
 
 # Black Share #
-black_share <- combined_data[combined_data$race == "2", ]
+black_share <- combined_data[combined_data$race == "Black", ]
 
 ## Creating Quantiles 
 black_share <- black_share |>
@@ -139,7 +140,7 @@ black_share <- black_share |>
   mutate(QUANTILE_LABEL = ifelse(QUANTILE == 1, "Low", "High"))
 
 # Asian Share #
-asian_share <- combined_data[combined_data$race == "4", ]
+asian_share <- combined_data[combined_data$race == "Asian", ]
 
 ## Creating Quantiles 
 asian_share <- asian_share |>
@@ -150,7 +151,7 @@ asian_share <- asian_share |>
   mutate(QUANTILE_LABEL = ifelse(QUANTILE == 1, "Low", "High"))
 
 # Hispanic Share #
-hispanic_share <- combined_data[combined_data$race == "3", ]
+hispanic_share <- combined_data[combined_data$race == "Hispanic", ]
 
 ## Creating Quantiles 
 hispanic_share <- hispanic_share |>
