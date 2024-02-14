@@ -42,10 +42,8 @@ If you're loading tidyverse, you might not need to load dplyr and ggplot2 separa
 If you're loading kableExtra, you might not need to load knitr separately.
 Removing redundant packages can help streamline your code and make it easier to manage dependencies. However, be mindful of any specific functionality you might be using from each package that's not covered by the broader ones you're loading.
 
+Date: 13 February 2024 
 # USER 2 #
-
-
-
 User
 explain this:
 
