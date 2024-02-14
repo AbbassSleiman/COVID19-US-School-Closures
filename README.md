@@ -20,4 +20,4 @@ The repo is structured as follows:
 
 ## LLM Usage  
 
-No auto-complete tools such as co-pilot were used in the course of this project. However, CHATGPT-3.5 was used to aid in the writing of this paper. In particular, it was primarily used to aid with the coding aspect of the paper as opposed to the actual writing. The entire chat history can be found in inputs/llm/usage.txt. 
+No auto-complete tools such as co-pilot were used in the course of this project. However, CHATGPT-3.5 was used to aid in the writing of this paper. In particular, it was primarily used to aid with the coding aspect of the paper as opposed to the actual writing. The entire chat history can be found in `inputs/llm/usage.txt`. 
