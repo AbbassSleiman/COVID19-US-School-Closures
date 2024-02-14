@@ -1,7 +1,7 @@
 ---
 title: "Significant declines in standardised test scores due to COVID-19 school closures disproportionately affect vulnerable students: A replication analysis using data from the United States and a case study on the Netherlands"
 author: "Krishiv Jain, Julia Kim, Abbass Sleiman"
-thanks: "Code and data are available at: [https://github.com/AbbassSleiman/COVID19-US-School-Closures](https://github.com/AbbassSleiman/COVID19-US-School-Closures); Replication on Social Science Reproduction platform available at: [https://www.socialsciencereproduction.org/reproductions/1616/index?step=0](https://www.socialsciencereproduction.org/reproductions/1616/index?step=0)"
+thanks: "Code and data are available at: [https://github.com/AbbassSleiman/COVID19-US-School-Closures](https://github.com/AbbassSleiman/COVID19-US-School-Closures); Replication on Social Science Reproduction platform available at: [https://www.socialsciencereproduction.org/reproductions/8aab4425-63ad-47bc-93ef-82076d6e49cc/index](https://www.socialsciencereproduction.org/reproductions/8aab4425-63ad-47bc-93ef-82076d6e49cc/index)"
 date: "February 15, 2024"
 date-format: long
 format: 
@@ -49,7 +49,7 @@ averaged_hispanic_share <- read_csv(here("data/analysis_data/averaged_hispanic_s
 
 # Introduction
 
-On March 11, 2020, the World Health Organisation (WHO) declared the COVID-19 outbreak a global pandemic, urging all countries take action in detecting infection and limiting spread [@WHO]. Shortly after the announcement, many countries began to implement measures to reduce COVID-19 contagion and transmission. In spite of the general effectiveness of such measures in saving lives [@effectiveness], they imposed severe disruptions to the lives of children and adolescents. These included delayed healthcare provision, decreased contact with peers and relatives, routine modification, and diminished sense of well-being [@impact_covid]. Among the most significant disruptions, and the topic of this paper, was the closure of schools in favour of virtual learning.
+On March 11, 2020, the World Health Organisation (WHO) declared the COVID-19 outbreak a global pandemic, urging all countries take action in detecting infection and limiting spread [@WHO]. Shortly after the announcement, many countries began to implement measures to reduce COVID-19 contagion and transmission. In spite of the general effectiveness of such measures in saving lives [@effectiveness], they imposed severe disruptions to the lives of children and adolescents. These included delayed healthcare provision, decreased contact with peers and relatives, routine modification, and diminished sense of well-being [@impact_covid]. Among the most significant disruptions, and the topic of this paper, was the closure of schools in favour of virtual learning. 
 
 Before the pandemic, there was a modestly-sized economic literature on the impact of school closures on learning, with data generally drawn from short-term episodes such as teacher strikes [@Jack_Oster_2023]. It was widely observed that time outside of school caused loss of literacy and numeracy skills, more so among the marginalised, and widened student achievement gaps [@pastresearch]. These findings are certainly suggestive of the possible effects of COVID-19 school closures on student learning. However, as the pandemic's disruptions typically surpassed previous episodes of school closures, the scope for inference from earlier works is limited [@Jack_Oster_2023]. A paper by Jack and Oster, "COVID-19, School Closures, and Outcomes" [-@Jack_Oster_2023] published in American Economic Association's *Journal of Economic Perspectives*, sought to address this gap, by focusing on emerging short-term evidence of the impact of COVID-19 school closures on academic performance.
 
@@ -57,7 +57,7 @@ In studying the scope of school closures across the United States (US), they rep
 
 Our paper seeks to assess the robustness and generalisability of Jack and Oster's work. We successfully replicate and extend three of its major research claims:
 
-(1) With respect to the world, the United States faced second highest number of days of school closed between January 2020 to December 2021, with a mean number of days of 667. 
+(1) With respect to the world, the United States faced the second highest number of days of schoolclosed between January 2020 to December 2021, with a mean number of days of 667. 
 
 (2) Access to in-person education was unequal across various demographic characteristics, being significantly correlated with an area's ethnic composition and broadband usage. In general, more disadvantaged districts spent more of the school year in virtual schooling.
 
@@ -85,11 +85,12 @@ Whilst the work by Jack and Oster [-@Jack_Oster_2023] uses number of data files,
 
 `region_data.csv`
 
-`county_region.csv`
+This dataset is obtained from the Oxford COVID-19 Policy Tracker, a project that collected information on COVID-19 policy measures for the years 2020, 2021 and 2022 [@Hale]. For 185 countries, the dataset assigns a daily Tracker score for each day between January 1st, 2020, and December 31st, 2022. Note that a Tracker score is defined as an integer value between 0 and 3, with a value of 2 or 3 denoting a school closure [@Jack_Oster_2023].
 
-This dataset includes the country and region name 
 
-country_name,region_name
+`country_region.csv`
+
+This dataset was  by ourselves for the purpose of replicating "FIGURE 2" in `99-replications.R`. It includes the same countries found in `region_data.csv` as well as the region to which they correspond, as classified by the World Bank [@worldbank2023]. These regions are sub-Saharan Africa, Europe and Central Asia, East Asia and Pacific, Middle East and North Africa, Latin America and Caribbean, South Asia and North America. 
 
 
 ### Average Number of School Closures by Local Demographic Characteristics
@@ -113,17 +114,23 @@ Note the original file was a `Stata` file of very large size. To reduce its size
 
 This dataset is available from Microsoft’s “United States Broadband Usage Percentages Dataset" GitHub Repository [@kahan2020usbroadband]. The data consists of broadband usage percentages at the US county-level in October 2020, obtained from anonymised data Microsoft collects. In less technical terms, this means that every time a device receives an update from or connects to a Microsoft service, Microsoft servers make an estimate of its throughput speed and determine its location at the zip-code level [@kahan2020usbroadband]. After making such measurements, noise is added to data aggregations, preventing leakage about specific individuals in the dataset and ensuring differential privacy. 
 
-### Standardised Assessment Scores 
+### Standardised Test Assessment Scores 
 
 `scores_lm_demographics.csv`
+
+This dataset is obtained from the final dataset found in the data repository 
+
+Standardised assessments were cancelled in 2020 due to the pandemic. 
  
 
 ## Methodology
 ### Extent of School Closures in the United States and the World 
 
+In an attempt to garner a deeper understanding of how the US compares to the world with regards to their explore how the US compares to the rest of the world with regards to the number @tbl-daysclosed provides a snippet of the top to nations by 
+
 ### Average Number of School Closures by Local Demographic Characteristics
 
-The purpose of [@figure2] is to explore the correlations between certain district and county characteristics, and the average number of virtual school days for the respective district or county. Specifically, we look at broandband usage by county, and the shares of four races (White, Black, Asian, Hispanic) by district. For each county or district, we assign "high" or "low" depending on if their level for the characteristics being explored is above or below their state's median, respectively. By doing so, we allow for the results to be driven by a variation within states, as opposed to variation across states.   
+The purpose of Figures \ref{fig-broadband} and \ref{fig-white} is to explore the correlations between certain district and county characteristics, and the average number of virtual school days for the respective district or county. Specifically, we look at broandband usage by county, and the shares of four races (White, Black, Asian, Hispanic) by district. For each county or district, we assign "high" or "low" depending on if their level for the characteristics being explored is above or below their state's median, respectively. By doing so, we allow for the results to be driven by a variation within states, as opposed to variation across states.   
 
 We start by using `nces_district_enrollment_2018_2020.csv.zip`. As previously mentioned, this data set splits the total enrollment into various categories. We start by converting the columns into the numeric class as appropriate. Some enrollment cells did not have a value, indicating that data was not collected for that specific metric. These occurred a handful of times for certain races within certain districts. These NAs were replaced with 0s. For our paper, we are concerned specifically with race. Thus, for each district, we calculate the total number of White, Black, Asian, and Hispanic students enrolled. Given the structure of the data, this is done by summing the total enrollment per race for Male and Female for each district. Next the total enrollment for the whole district was calculated, before then calculating the share of total enrollment that each race comprises. 
 
@@ -133,14 +140,56 @@ Next, the aforementioned data for each race that separated the districts into qu
 
 To calculate the information regarding broadband, we started with the `broadband_data_2020October.csv` data set. Only columns that were necessary were kept, and the columns were converted to the numeric class as appropriate. Each county was then classified as either "High" or "Low" depending on if their share was above or below their respective state's median. A single county contains multiple districts, and since our data regarding the number of virtual days was based on district, the data was averaged across districts for each county. `nces_district_directory_2018.dta` provided information on which county each district belonged to, and was merged with the previous data that calculated the average number of virtual days for each district, before then calculating the average number of virtual days for each county. Finally, we average the number of virtual days for the counties labelled "High" and "Low." 
 
-### Standardised Assessment Scores 
+### Standardised Test Assessment Scores 
+
+ 
 
 
 # Results
+Data from the Oxford COVID-19 Policy Tracker [@Hale] and World Bank [@worldbank2023] were used to determine the average number of school closures by regions worldwide between January 2020-December 2021. We reconstruct this result in Figure \ref{fig-daysclosed} and extract the top 5 countries with the highest average number of closures in Table \ref{tbl-daysclosed}. Figure \ref{fig-daysclosed} shows that North America had the highest at 535 days, which is around 73% of the two-year period, whilst sub-Saharan Africa had the least at 300 days, or around 38% of the two-year period. Thus, countries with the longest closures spent more than twice the amount of time in virtual schooling compared to those with the shortest closures.
+
+```{r}
+#| label: fig-daysclosed
+#| echo: false
+#| warning: false
+#| message: false
+#| fig-cap: "Average number of days of school closed, by region, between January 2020–December 2021."
+# Calculate the number of days schools were closed for each country
+days_closed_per_country <- cleaned_region_data |>
+  group_by(region_name, country_name) |>
+  summarize(days_closed = sum(covid_score > 1))
+
+# Calculate the mean number of days closed for each region
+mean_days_closed_per_region <- days_closed_per_country |>
+  group_by(region_name) |>
+  summarize(mean_days_closed = mean(days_closed))
+
+# Sort regions in ascending order by mean_days_closed
+mean_days_closed_per_region <- mean_days_closed_per_region |>
+  arrange(mean_days_closed)
+
+# Create a bar chart
+ggplot(mean_days_closed_per_region, 
+       aes(x = reorder(region_name, mean_days_closed), y = mean_days_closed)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  geom_text(aes(label = round(mean_days_closed)), vjust = -0.5, color = "black", size = 2.5) +
+  labs(x = "Region", y = "Mean Days Closed") +
+  scale_y_continuous(
+    limits = c(0, 600),
+    breaks = seq(0, 600, by = 100)
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+In studying individual countries, Table \ref{tbl-daysclosed} shows that the United States faced the second highest number of closures worldwide during this two-year period, with a mean number of 667 days. This is, in fact, significantly higher than the mean number of closures worldwide, determined to be $356 \pm 175$ days. Thus, relative to the global picture, the extent of school closures in North America and, in particular, the United States appears to be significantly more prolonged. 
+
 ```{r}
 #| label: tbl-daysclosed
 #| echo: false
-#| tbl-cap: "Top 5 countries by number of school closures from Jan 2020 - Dec 2021"
+#| warning: false
+#| message: false
+#| tbl-cap: "Countries with Highest School Closures from Jan 2020-Dec 2021."
 
 # Calculate the number of days schools were closed for each country
 days_closed_per_country <- cleaned_region_data |>
@@ -154,27 +203,35 @@ days_closed_per_country |>
   kable(col.names = c("Country", "Days Closed"))
 ```
 
+Moreover, data from CSDH [@citeraw1], NCES [@citeraw2] and Microsoft [@kahan2020usbroadband] were used to show correlations between school closures and demographic characteristics, both across and within US states. We reconstruct and extend a portion of the data used for this analysis in Figures \ref{fig-broadband} and \ref{fig-white}. In particular, we enrich the analysis on the average days in virtual school by race, by adding shares of White and Asian students. This is done so that more insightful comparisons can be made across important ethnic classes. 
+
+Figure \ref{fig-broadband} shows correlations ... Altogether, school districts located in counties with lower broadband usage spent more of the 2020-2021 school year in virtual learning, consistent with the results obtained by Jack and Oster [-@Jack_Oster_2023]. 
+
 ```{r}
 #| label: fig-broadband
 #| echo: false
-#| fig-cap: "BroadBand"
+#| warning: false
+#| message: false
+#| fig-cap: "Average days in virtual school by county broadband usage."
 ggplot(averaged_broadband, aes(x = QUANTILE_LABEL, y = average)) +
   geom_bar(stat = "identity", fill = "skyblue", width = 0.5) +
   labs(x = "Quantile Label", y = "Average") +
-  ggtitle("Average Days Virtual by Quantile") +
   geom_text(aes(label = sprintf("%.0f", average)), 
             position = position_dodge(width = 0.9), 
             vjust = -0.5, size = 3) +
   labs(x = "Quantile", y = "Average Days Virtual") +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5, size = 12))
 ```
 
+On the other hand, Figure \ref{fig-white} shows correlations [ADD DETAIL]. In particular, within state, school districts with higher shares of Black and Hispanic students spent more of the 2020-2021 year in virtual schooling than those with lower shares of Black and Hispanics. Precisely the opposite trend is observed for white students. No significant variation in the days spent in virtual schooling is observed for Asian students. [ADD MORE DETAIL]
 
 ```{r}
 #| label: fig-white
 #| echo: false
-#| fig-cap: "Average Virtual School Days by Share of Race"
+#| warning: false
+#| message: false
+#| fig-cap: "Average days in virtual school by district-level race shares."
 
 
 whiteplot <- ggplot(averaged_white_share, aes(x = QUANTILE_LABEL, y = average)) +
@@ -246,11 +303,25 @@ grid.arrange(
 
 ```
 
+Taken together, in-person education was inequitably distributed across demographic characteristics, with more disadvantaged districts spending more time in virtual schooling [@Jack_Oster_2023]. In particular, districts with less technological preparedness and higher shares of minorities -- especially Blacks and Hispanics -- were further disenfranchised by less access to in-person education. This pattern likely reinforced educational inequities between vulnerable and more privileged groups. 
+
+Finally, data from ... was used to examine changes in district-level pass rate data from 11 state standardised assessments, taken in the spring of 2018, 2019 and 2021. We again reconstruct and extend the data...  
+
+
+[ADD DETAIL]. 
+
+Panels A and B show the scores in mathematics and in ELA, respectively. [EXPLAIN FIGURE & SYMBOLS]
+
+Consistent with Jack and Oster [-@Jack_Oster_2023], our analysis shows a significant decline in pass rates from the 2018-2019 to the 2020-2021 school year. In particular, pass rates in mathematics and ELA declined by 12.8 and 6.8 percentage points, respectively. The discrepancy between these two subjects is consistent with much of the current economic literature, which shows mathematics scores to be more sensitive to schooling differences [@betts2011effect; @angrist]. 
+
+... Thus, we find that in-person learning has significantly higher benefits for districts with larger shares of Black and Hispanic students. 
 
 
 ```{r}
 #| label: fig-testscoresbyonline
 #| echo: false
+#| message: false
+#| warning: false 
 #| fig-cap: "Test score by percent online (change)"
 # Calculate the total number of enrollments overall
 total_enrollment <- sum(cleaned_test_score_data$enrollment)
