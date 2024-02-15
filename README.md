@@ -4,7 +4,8 @@
 
 This repo contains the data, `R` scripts and final `PDF` report used in a reproduction of Jack and Oster's "COVID-19, School Closures, and Outcomes" (2023), published in American Economic Association's *Journal of Economic Perspectives*. We successfully replicate and extend three of its major research claims, noting one main discrepancy between our analysis and theirs: we found districts with lower broadband usage to in fact spend less of the school year in virtual schooling, whereas the opposite phenomenon was observed by Jack and Oster (2023). This analysis furthers the original paper's discussion on the learning loss due to school closures during the COVID-19 pandemic in the context of the Netherlands. The paper concludes that the COVID-19 pandemic imposed significant costs of learning loss and widened inequality gaps in the United States and the Netherlands, with impacts likely largerin countries disenfranchised by weaker infrastructure or longer closures. 
 
-A replication using the Social Science Reproduction was also produced: https://www.socialsciencereproduction.org/reproductions/8aab4425-63ad-47bc-93ef-82076d6e49cc/index 
+A replication using the Social Science Reproduction was also produced: 
+- minimal replication available here: https://doi.org/10.48152/ssrp-9vc2-gp37
 
 Link to original paper: [https://onlinelibrary.wiley.com/doi/10.1111/ajps.12595](https://www.aeaweb.org/articles?id=10.1257/jep.37.4.51)
 
