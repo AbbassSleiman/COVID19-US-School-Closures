@@ -104,7 +104,7 @@ For each district in the United States, it provides information on the percentag
 
 `nces_district_directory_2018.dta`
 
-This dataset is obtained from the National Center of Education Statistics [@citeraw2]. For each district, it provides information as to the county and state to which they belong, and their NCES district ID. 
+This dataset is obtained from the National Center of Education Statistics [@citeraw2]. For each district, it provides information as to the county and state to which they belong, and their NCES district ID. Note that unique NCES ID numbers are automatically assigned to districts upon being reported to the US Department of Education by their state education agency via the platform EDFacts [@citeraw2]. 
 
 `nces_district_enrollment_2018_2020.csv.zip`
 
