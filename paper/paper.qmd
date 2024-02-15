@@ -1,5 +1,6 @@
 ---
-title: "Significant declines in standardised test scores due to COVID-19 school closures disproportionately affect vulnerable students: A replication analysis using data from the United States and a case study on the Netherlands"
+title: "Significant declines in standardised test scores due to COVID-19 school closures disproportionately affect vulnerable students"
+subtitle: "A replication analysis using data from the United States and a case study on the Netherlands"
 author: "Krishiv Jain, Julia Kim, Abbass Sleiman"
 thanks: "Code and data are available at: [https://github.com/AbbassSleiman/COVID19-US-School-Closures](https://github.com/AbbassSleiman/COVID19-US-School-Closures); Replication on Social Science Reproduction platform available at: [https://doi.org/10.48152/ssrp-9vc2-gp37](https://doi.org/10.48152/ssrp-9vc2-gp37)"
 date: "February 15, 2024"
