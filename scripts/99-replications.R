@@ -1,8 +1,9 @@
 #### Preamble ####
-# Purpose: Replicated graphs from... [...UPDATE THIS...]
+# Purpose: Replicated graphs from Jack and Oster's paper titled "COVID-19, School Closures, and
+# Outcomes" found at https://www.aeaweb.org/articles?id=10.1257/jep.37.4.51. In particular, we aimed
+# to replicate Figure 1, Figure 2, and Figure 4, as denoted in their paper.
 # Author: Krishiv Jain, Julia Kim, Abbass Sleiman
 # Date: 12 February 2024 
-# Contact: 
 
 #### Workspace setup ####
 library(tidyverse)
