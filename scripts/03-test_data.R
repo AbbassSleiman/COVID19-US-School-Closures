@@ -40,12 +40,11 @@ cleaned_region_data$covid_score |> class() == "numeric"
 
 ##Check the minimum number is equal, or greater than, 0 ##
 #Based on: https://tellingstorieswithdata.com/02-drinking_from_a_fire_hose.html#simulate
-broadband_data$`COUNTY ID` |> min() >= 0
+final_broadband_data$`BROADBAND USAGE` |> min() >= 0
 
 ##Check the class of the column is numeric##
-broadband_data$`COUNTY ID` |> class() == "numeric"
-race_data$enrollment |> class() == "numeric"
-
+final_broadband_data$QUANTILE_LABEL |> class() == "character"
+final_broadband_data$`BROADBAND USAGE` |> "numeric"
 
 #### TESTING DATA FOR FIGURES ON TEST SCORES ####
 # Check that there are exactly 21 unique states to which a school district can belong
