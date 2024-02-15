@@ -4,7 +4,10 @@
 # Date: 14 February 2024
 # Contact: krishiv.jain@mail.utoronto.ca, abbass.sleiman@mail.utoronto.ca, juliaym.kim@mail.utoronto.ca
 # License: MIT
-# Pre-requisites: Follow instructions in README to download data on race enrollment
+# Pre-requisites: In order to run this code, scores_lm_demographics.dta must be downloaded in advance.
+# This can be done either by downloading the file directly from data/raw_data in this paper's repository,
+# or by downloading directly from Jack and Oster's replication package at 
+# https://www.openicpsr.org/openicpsr/project/193523/version/V1/view
 
 
 #### Workspace setup ####
