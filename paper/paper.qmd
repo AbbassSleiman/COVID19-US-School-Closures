@@ -154,7 +154,7 @@ To achieve this, we made use of the `scores_lm_demographics.dta` dataset. Howeve
 
 @fig-mathscoresrace, @fig-elascoresrace examine these test pass rate changes from a different lens. Instead of considering the share of in-person learning, it explores the possibility of a systematic difference in the changes in test pass rates based on the relative share of various races. In particular, the figures examine the correlation between changes in test pass rates and the relative quantile share of White, Black, and Hispanic students which is one of "Low" or "High". As before, this is also done for each of the three years of interest for each of the three races.
 
-To generate this graph, we once again employed the cleaned `scores_lm_demographics.csv` file as was used to generate @fig-mathscoresbyonline and @fig-elascoresbyonline. We first filtered by subject to only consider one at a time, after which the total enrollment across all school districts was calculated as well as the two quantiles, "Low" and "High", for each of the three races relative to the average shares in each of the 21 states. From there, we grouped the data by year and quantile for each of the three races, then calculated the weighted average change in test pass rates for each subject and quantile, across all races and years. From there, we simply combined the summary statistics for each of the races and their respective quantiles, and showcased them in the figures, differentiating by race through color, and year through shape.
+To generate this graph, we once again employed the cleaned `scores_lm_demographics.csv` file as was used to generate @fig-mathscoresbyonline and @fig-elascoresbyonline. We first filtered by subject to only consider one at a time, after which the total enrollment across all school districts was calculated as well as the two quantiles, "Low" and "High", for each of the three races relative to the average shares across all school districts. From there, we grouped the data by year and quantile for each of the three races, then calculated the weighted average change in test pass rates for each subject and quantile, across all races and years. From there, we simply combined the summary statistics for each of the races and their respective quantiles, and showcased them in the figures, differentiating by race through color, and year through shape.
 
 
 # Results
@@ -474,7 +474,6 @@ total_enrollment <- sum(white_share$enrollment)
 
 # Define quantiles for white share
 white_share <- white_share |>
-  group_by(state) |>
   mutate(quantile = ntile(share_enroll_white, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
@@ -483,7 +482,6 @@ white_share <- white_share |>
 
 # Define quantiles for black share
 black_share <- black_share |>
-  group_by(state) |>
   mutate(quantile = ntile(share_enroll_black, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
@@ -492,7 +490,6 @@ black_share <- black_share |>
 
 # Define quantiles for hispanic share
 hispanic_share <- hispanic_share |>
-  group_by(state) |>
   mutate(quantile = ntile(share_enroll_hispanic, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
@@ -578,7 +575,6 @@ total_enrollment <- sum(white_share$enrollment)
 
 # Define quantiles for white share
 white_share <- white_share |>
-  group_by(state) |>
   mutate(quantile = ntile(share_enroll_white, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
@@ -587,7 +583,6 @@ white_share <- white_share |>
 
 # Define quantiles for black share
 black_share <- black_share |>
-  group_by(state) |>
   mutate(quantile = ntile(share_enroll_black, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
@@ -596,7 +591,6 @@ black_share <- black_share |>
 
 # Define quantiles for hispanic share
 hispanic_share <- hispanic_share |>
-  group_by(state) |>
   mutate(quantile = ntile(share_enroll_hispanic, 2)) |>
   mutate(quantile_level = case_when(
     quantile == 1 ~ "Low",
