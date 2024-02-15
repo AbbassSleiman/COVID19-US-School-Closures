@@ -6,6 +6,7 @@ This repo contains the data, `R` scripts and final `PDF` report used in a reprod
 
 A replication using the Social Science Reproduction was also produced: 
 - minimal replication available here: https://doi.org/10.48152/ssrp-9vc2-gp37
+- full replication available here: https://doi.org/10.48152/ssrp-qvfh-0r62
 
 Link to original paper: [https://onlinelibrary.wiley.com/doi/10.1111/ajps.12595](https://www.aeaweb.org/articles?id=10.1257/jep.37.4.51)
 
